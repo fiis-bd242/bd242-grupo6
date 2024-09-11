@@ -32,7 +32,7 @@
   - [5.2. Diccionario de Datos](./5/5.2/5.2.md)
 
 
-## 👥 Contributors
+## 👥 Participantes
 
 <a href="https://github.com/fiis-bd242/bd242-grupo6/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=fiis-bd242/bd242-grupo6" />
