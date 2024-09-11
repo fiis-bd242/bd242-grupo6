@@ -30,3 +30,11 @@
 - [5. Modelo Conceptual](./5/5.md)
   - [5.1. Diagrama Entidad Relación](./5/5.1/5.1.md)
   - [5.2. Diccionario de Datos](./5/5.2/5.2.md)
+
+
+## 👥 Contributors
+
+<a href="https://github.com/fiis-bd242/bd242-grupo6/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=fiis-bd242/bd242-grupo6" />
+</a>
+
