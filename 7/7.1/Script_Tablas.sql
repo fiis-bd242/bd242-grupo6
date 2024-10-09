@@ -295,8 +295,10 @@ CREATE TABLE Fact_Rep_Deuda (
     FOREIGN KEY (COD_DEUDA) REFERENCES Dim_Deuda(COD_DEUDA)
 );
 DROP TABLE Fact_Rep_Deuda
+	
+-- CREATE TABLE -> Modulo de liquidacion
 
--- Create Table for Documento_adm
+-- Tabla Documento_adm
 CREATE TABLE Documento_adm (
     COD_DOCUMENTO VARCHAR(9) PRIMARY KEY,
     NOMBRE_DOC VARCHAR(100),
@@ -310,7 +312,7 @@ CREATE TABLE Documento_adm (
     FOREIGN KEY (COD_ANALISTA_AC) REFERENCES COD_ANALISTA_CREDITO(COD_ANALISTA_AC)
 );
 
--- Create Table for Solicitante
+-- Table Solicitante
 CREATE TABLE Solicitante (
     COD_SOLICITANTE VARCHAR(9) PRIMARY KEY,
     NOMBRE_SOL VARCHAR(100),
@@ -321,7 +323,7 @@ CREATE TABLE Solicitante (
     TELEFONO_SOL VARCHAR(15)
 );
 
--- Create Table for Solicitud
+-- Tabla Solicitud
 CREATE TABLE Solicitud (
     COD_SOLICITUD VARCHAR(9) PRIMARY KEY,
     FECHA_INICIO_SOLICITUD DATE,
@@ -334,7 +336,7 @@ CREATE TABLE Solicitud (
     FOREIGN KEY (ID_SOL_ANALISTA_ADM) REFERENCES Solicitud_Analista_admision(COD_SOL_ANALISTA_ADM)
 );
 
--- Create Table for Entrevista
+-- Tabla Entrevista
 CREATE TABLE Entrevista (
     COD_ENTREVISTA VARCHAR(9) PRIMARY KEY,
     FECHA_ENTREVISTA DATE,
@@ -346,7 +348,7 @@ CREATE TABLE Entrevista (
     FOREIGN KEY (COD_SOLICITUD) REFERENCES Solicitud(COD_SOLICITUD)
 );
 
--- Create Table for Analista_admision
+-- Tabla nalista_admision
 CREATE TABLE Analista_admision (
     COD_ANALISTA_ADM VARCHAR(9) PRIMARY KEY,
     NOMBRE_AD VARCHAR(100),
@@ -359,7 +361,7 @@ CREATE TABLE Analista_admision (
     COD_SOLANALISTA_ADM VARCHAR(9)
 );
 
--- Create Table for Solicitud_Analista_admision
+-- Tabla Solicitud_Analista_admision
 CREATE TABLE Solicitud_Analista_admision (
     COD_SOL_ANALISTA_ADM VARCHAR(9) PRIMARY KEY,
     FECHA_INICIO DATE,
