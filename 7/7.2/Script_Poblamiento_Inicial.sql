@@ -39,7 +39,17 @@ JOIN Cliente C ON D.COD_CLIENTE = C.COD_CLIENTE
 JOIN Dim_Tiempo T ON D.FECHA_VENCIMIENTO = T.FECHA;    
 
 
-
+INSERT INTO Cliente (COD_CLIENTE, NOMBRE, RAZON_SOCIAL, TELEFONO, CORREO_EMPRESA, DIRECCION_CLIENTE, CREDITO_MAXIMO, ESTADO_CLIENTE, FECHA_REGISTRO, LINEA_CREDITO, CLASE_PERSONA, REGION, REP_LEGAL) VALUES
+('CL00001', 'Distribuidor A', 'Distribuciones A S.A.C.', '123456789', 'distribuidora@a.com', 'Av. Siempre Viva 123', 5000.00, 'OPERATIVO CON MOVIMIENTO', '2023-01-15', 2500.00, 'Jurídica', 'Lima', 'Juan Pérez'),
+('CL00002', 'Distribuidor B', 'Suministros B E.I.R.L.', '987654321', 'distribuidorb@b.com', 'Calle Falsa 456', 3000.00, 'OPERATIVO SIN MOVIMIENTO', '2023-02-10', 1500.00, 'Jurídica', 'Cusco', 'María López'),
+('CL00003', 'Distribuidor C', 'Importaciones C S.A.C.', '456789123', 'distribuidorC@c.com', 'Av. Central 789', 8000.00, 'PROCESO DE LIQUIDACION', '2023-03-05', 4000.00, 'Natural', 'Arequipa', 'Carlos García'),
+('CL00004', 'Distribuidor D', 'Servicios D S.A.C.', '321654987', 'distribuidoresD@d.com', 'Calle Verde 321', 6000.00, 'PROCESO DE LIQUIDACION', '2023-04-20', 3000.00, 'Jurídica', 'Piura', 'Luisa Sánchez'),
+('CL00005', 'Distribuidor E', 'Productos E S.A.', '123123123', 'distribuidore@e.com', 'Av. Libertad 111', 7000.00, 'LIQUIDADO', '2023-05-18', 3500.00, 'Natural', 'Trujillo', 'Alberto Castillo'),
+('CL00006', 'Distribuidor F', 'Comercial F E.I.R.L.', '987987987', 'distribuidorF@f.com', 'Av. Puno 333', 4000.00, 'LIQUIDADO', '2023-06-15', 2000.00, 'Jurídica', 'Iquitos', 'Ana Martínez'),
+('CL00007', 'Distribuidor G', 'Distribuciones G S.A.C.', '147258369', 'distribuidorg@g.com', 'Calle Lima 222', 2000.00, 'OPERATIVO CON MOVIMIENTO', '2023-07-10', 1000.00, 'Natural', 'Tacna', 'Pedro Jiménez'),
+('CL00008', 'Distribuidor H', 'Suministros H E.I.R.L.', '963258741', 'distribuidorH@h.com', 'Av. Arequipa 444', 5000.00, 'OPERATIVO SIN MOVIMIENTO', '2023-08-22', 2500.00, 'Jurídica', 'Chiclayo', 'Gabriela Torres'),
+('CL00009', 'Distribuidor I', 'Importaciones I S.A.C.', '852369741', 'distribuidorI@i.com', 'Calle Real 555', 3000.00, 'PROCESO DE LIQUIDACION', '2023-09-12', 1500.00, 'Natural', 'Huancayo', 'Luis Vargas'),
+('CL00010', 'Distribuidor J', 'Servicios J S.A.C.', '741258963', 'distribuidorJ@j.com', 'Av. Independencia 888', 9000.00, 'OPERATIVO CON MOVIMIENTO', '2023-10-01', 4500.00, 'Jurídica', 'Moquegua', 'Patricia Ruiz');
 --POBLAMIENTO INCIAL MODULO ADMISION
 -- Poblamiento inicial para la tabla Solicitante
 INSERT INTO Solicitante (COD_SOLICITANTE, NOMBRE_SOL, RUC_SOL, DNI_SOL, UBICACION_SOL, CORREO_ELECTRONICO_SOL, TELEFONO_SOL) VALUES
