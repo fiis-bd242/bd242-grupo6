@@ -22,6 +22,14 @@ DROP TABLE IF exists Notificacion_cobranza;
 DROP TABLE IF exists Deuda;
 DROP TABLE IF exists Coordinador_Zonal;
 
+-- DROP TABLE --> Módulo de admisión
+DROP TABLE IF EXISTS Documento_adm;
+DROP TABLE IF EXISTS Entrevista;
+DROP TABLE IF EXISTS Solicitud_Analista_admision;
+DROP TABLE IF EXISTS Solicitud;
+DROP TABLE IF EXISTS Solicitante;
+DROP TABLE IF EXISTS Analista_admision;
+
 
 -- CREATE TABLE -> Modulo de equipos y recargas
 
