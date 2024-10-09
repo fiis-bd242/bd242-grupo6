@@ -423,12 +423,17 @@ INSERT INTO Solicitud (COD_SOLICITUD, FECHA_INICIO_SOLICITUD, FECHA_FIN_SOLICITU
 ('SOL002', '2024-02-01', '2024-02-10', 'COMPLETADA', 'CAC', 'S002'),
 ('SOL003', '2024-03-01', '2024-03-15', 'CANCELADA', 'DAC', 'S003');
 
--- Poblamiento inicial para la tabla Documento_adm
-INSERT INTO Documento_adm (COD_DOCUMENTO, NOMBRE_DOC, TIPO_DOC, RUTA_DOC, FECHA_RECIBIDO, VERSION, ID_SOLICITUD, COD_ANALISTA_AC) VALUES
-('DOC001', 'Solicitud de Crédito', 'PDF', '/docs/solicitud_credito.pdf', '2024-01-02', 1, 'SOL001', 'ANAL001'),
-('DOC002', 'Contrato', 'PDF', '/docs/contrato.pdf', '2024-02-03', 1, 'SOL002', 'ANAL002'),
-('DOC003', 'Informe de Evaluación', 'DOCX', '/docs/informe_evaluacion.docx', '2024-03-05', 1, 'SOL003', 'ANAL003');
+-- Poblamiento inicial para la tabla Analista_credito
+INSERT INTO Analista_credito (COD_ANALISTA_CREDITO, NOMBRE_AC, CORREO_AC, FECHA_CONTRATACION, TELEFONO_AC, DIRECCION_AC, ID_SUCURSAL, ESTADO_ANALISTA_AC) VALUES
+('CRED01', 'Roberto Torres', 'roberto.torres@example.com', '2020-01-15', '98765430', 'Calle Ejemplo 123', 'SUC01', 'activo'),
+('CRED02', 'Claudia Silva', 'claudia.silva@example.com', '2020-03-20', '98765431', 'Calle Ejemplo 456', 'SUC02', 'activo'),
+('CRED03', 'Fernando Ruiz', 'fernando.ruiz@example.com', '2019-07-10', '98765432', 'Calle Ejemplo 789', 'SUC03', 'inactivo');
 
+-- Poblamiento inicial para la tabla Documento_adm (ajustado a los nuevos datos de Analista_credito)
+INSERT INTO Documento_adm (COD_DOCUMENTO, NOMBRE_DOC, TIPO_DOC, RUTA_DOC, FECHA_RECIBIDO, VERSION, ID_SOLICITUD, COD_ANALISTA_CREDITO) VALUES
+('DOC001', 'Solicitud de Crédito', 'PDF', '/docs/solicitud_credito.pdf', '2024-01-02', 1, 'SOL001', 'CRED01'), 
+('DOC002', 'Contrato', 'PDF', '/docs/contrato.pdf', '2024-02-03', 1, 'SOL002', 'CRED02'), 
+('DOC003', 'Informe de Evaluación', 'DOCX', '/docs/informe_evaluacion.docx', '2024-03-05', 1, 'SOL003', 'CRED03');
 -- Poblamiento inicial para la tabla Entrevista
 INSERT INTO Entrevista (COD_ENTREVISTA, FECHA_ENTREVISTA, HORA_INICIO_ENTREVISTA, HORA_FIN_ENTREVISTA, RESULTADOS_ENTREVISTA, OBSERVACIONES_ENTREVISTA, COD_SOLICITUD) VALUES
 ('ENT001', '2024-01-03', '10:00:00', '10:30:00', 'Aprobada', 'El postulante mostró buena actitud.', 'SOL001'),
