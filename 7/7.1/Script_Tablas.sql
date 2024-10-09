@@ -16,6 +16,13 @@ DROP TABLE IF exists Contrato;
 DROP TABLE IF exists Analista_credito;
 DROP TABLE IF exists Analista_soporte;
 
+--DROP TABLE --> Modulo cobranzas
+DROP TABLE IF exists Analista_cobranza;
+DROP TABLE IF exists Notificacion_cobranza;
+DROP TABLE IF exists Deuda;
+DROP TABLE IF exists Coordinador_Zonal;
+
+
 -- CREATE TABLE -> Modulo de equipos y recargas
 
 -- Tabla Cliente
