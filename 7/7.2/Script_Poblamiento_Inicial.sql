@@ -79,3 +79,10 @@ INSERT INTO Solicitud_Analista_admision (COD_SOL_ANALISTA_ADM, FECHA_INICIO, FEC
 ('SOL_ANAL002', '2024-02-01', '2024-02-15', 'ANAL002', 'SOL002'),
 ('SOL_ANAL003', '2024-03-01', '2024-03-20', 'ANAL003', 'SOL003');
 
+-- Inserts para la tabla Analista_credito
+INSERT INTO Analista_credito (COD_ANALISTA_AC, NOMBRE_AC, CORREO_AC, FECHA_CONTRATACION, TELEFONO_AC, DIRECCION_AC, ID_SUCURSAL, ESTADO_ANALISTA_AC) VALUES
+('AC0001', 'Juan Pérez', 'juan.perez@empresa.com', '2023-01-10', '987654321', 'Calle 123', 'SUC001', 'activo'),
+('AC0002', 'Maria Gomez', 'maria.gomez@empresa.com', '2023-02-15', '987654322', 'Calle 456', 'SUC002', 'activo'),
+('AC0003', 'Luis Torres', 'luis.torres@empresa.com', '2023-03-20', '987654323', 'Calle 789', 'SUC003', 'inactivo'),
+('AC0004', 'Ana Sánchez', 'ana.sanchez@empresa.com', '2023-04-25', '987654324', 'Calle 321', 'SUC004', 'activo'),
+('AC0005', 'Carlos Díaz', 'carlos.diaz@empresa.com', '2023-05-30', '987654325', 'Calle 654', 'SUC005', 'inactivo');
