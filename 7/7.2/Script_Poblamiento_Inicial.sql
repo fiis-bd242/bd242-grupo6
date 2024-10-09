@@ -266,3 +266,41 @@ INSERT INTO Oficial_Credito (COD_OFICIAL, NOMBRE_CRED, CORREO_CRED, COD_SOLICITU
 ('OFIC001', 'Miguel Ruiz', 'miguel.ruiz@example.com', 'SOL0000001', '987654313', 'Avenida 123', 'SUCUR001', '2024-07-15'),
 ('OFIC002', 'Sharon López', 'sharon.lopez@example.com', 'SOL0000002', '987654315', 'Avenida 456', 'SUCUR002', '2024-08-01'),
 ('OFIC003', 'Jennifer Miranda', 'jennifer.miranda@example.com', 'SOL0000003','987654317', 'Avenida 789', 'SUCUR003', '2024-05-15');
+
+---Inserts para la tabla Analista_cobranza
+INSERT INTO Analista_cobranza (COD_ANALISTA_COBRANZAS, NOMBRE_ANALISTA_COBRANZA, FECHA_DE_CONTRATACION_COBRANZA, TELEFONO_ANALISTA_COBRANZA, CORREO_ANALISTA_COBRANZA, REGION_ANALISTA_COBRANZA)
+VALUES
+('ANL000001', 'Analista 1', '2022-01-15', '999111222', 'analista1@cobranza.com', 'Lima'),
+('ANL000002', 'Analista 2', '2021-06-20', '999333444', 'analista2@cobranza.com', 'Cusco'),
+('ANL000003', 'Analista 3', '2020-05-18', '999555666', 'analista3@cobranza.com', 'Arequipa'),
+('ANL000004', 'Analista 4', '2022-11-30', '999777888', 'analista4@cobranza.com', 'Piura'),
+('ANL000005', 'Analista 5', '2023-03-22', '999888999', 'analista5@cobranza.com', 'Trujillo');
+
+INSERT INTO Coordinador_Zonal (COD_COORDINADOR_ZONAL, NOMBRE_COORDINADOR, FECHA_CONTRATACION_COORDINADOR, TELEFONO_COORDINADOR, ZONA_ASIGNADA)
+VALUES
+('COZ0000001', 'Coordinador 1', '2020-02-01', '911111111', 'Lima'),
+('COZ0000002', 'Coordinador 2', '2019-07-15', '922222222', 'Cusco'),
+('COZ0000003', 'Coordinador 3', '2018-09-10', '933333333', 'Arequipa'),
+('COZ0000004', 'Coordinador 4', '2021-01-25', '944444444', 'Piura'),
+('COZ0000005', 'Coordinador 5', '2022-03-10', '955555555', 'Trujillo');
+
+INSERT INTO Deuda (COD_DEUDA, ESTADO_DEUDA, MONTO_DEUDA, DIAS_RETRASO, ESTADO_COBRANZA, FECHA_VENCIMIENTO, COD_ANALISTA_COBRANZA, COD_CLIENTE, COD_COORDINADOR_ZONAL)
+VALUES
+('DEU00000001', 'Atrasado', 5000.00, 120, 'Prejudicial', '2024-06-11', 'ANL000001', 'CL00003', 'COZ0000001'),
+('DEU00000002', 'Atrasado', 3000.00, 90, 'Administrativa', '2024-07-11', 'ANL000002', 'CL00004', 'COZ0000005'),
+('DEU00000003', 'Al dia', 8000.00, 0, 'En fecha de pago', '2024-10-09', 'ANL000003', 'CL00001', 'COZ0000003'),
+('DEU00000005', 'Atrasado', 7000.00, 60, 'Regular', '2024-08-10', 'ANL000002', 'CL00009', 'COZ0000002'),
+
+INSERT INTO Notificacion_cobranza (COD_NOTIFICACION_COBRANZA, FECHA_ENVIO, TIPO_NOTIFICACION, COD_COORDINADOR_ZONAL, COD_CLIENTE, COD_DEUDA)
+VALUES
+('NOTC0001', '2024-08-15', 'Correo electrónico', 'COOR000002', 'CL00009', 'DEU00000005'),
+('NOTC0002', '2024-09-10', 'Llamada telefónica', 'COOR000002', 'CL00009', 'DEU00000005');
+('NOTC0003', '2024-07-15', 'Correo electrónico', 'COZ0000005', 'CL00004', 'DEU00000002'),
+('NOTC0004', '2024-08-01', 'Llamada telefónica', 'COZ0000005', 'CL00004', 'DEU00000002'),
+('NOTC005', '2024-08-15', 'Visita presencial', 'COZ0000005', 'CL00004', 'DEU00000002'),
+('NOTC006', '2024-09-01', 'Carta de cobranza', 'COZ0000005', 'CL00004', 'DEU00000002');
+('NOTC007', '2024-06-15', 'Correo electrónico', 'COZ0000001', 'CL00003', 'DEU00000001'),
+('NOTC008', '2024-07-01', 'Llamada telefónica', 'COZ0000001', 'CL00003', 'DEU00000001'),
+('NOTC009', '2024-07-15', 'Visita presencial', 'COZ0000001', 'CL00003', 'DEU00000001'),
+('NOTC010', '2024-08-01', 'Carta de cobranza', 'COZ0000001', 'CL00003', 'DEU00000001'),
+('NOTC011', '2024-09-01', 'Derivación a área legal', 'COZ0000001', 'CL00003', 'DEU00000001');
