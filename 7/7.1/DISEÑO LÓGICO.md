@@ -2,7 +2,7 @@
 
 <div align="center">
 <a>
-    <img src="https://github.com/fiis-bd242/bd242-grupo6/blob/main/src/DISE%C3%91O%20L%C3%93GICO.png?raw=true" alt="Logo" width="800" style=" padding-right: 120px;">
+    <img src="https://github.com/fiis-bd242/bd242-grupo6/blob/main/src/ER-Dise%C3%B1o%20l%C3%B3gico.jpg?raw=true" alt="Logo" width="800" style=" padding-right: 120px;">
 </a>
 </div>
 

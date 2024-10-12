@@ -139,27 +139,33 @@ INSERT INTO Analista_soporte (COD_ANALISTA_S, NOMBRE_S, CORREO_S, FECHA_CONTRATA
 
 -- Inserts para la tabla Contrato
 INSERT INTO Contrato (COD_CONTRATO, FECHA_INICIO, FECHA_FIN_NORMAL, FECHA_FIN_REAL, ESTADO_CONTRATO, COD_CLIENTE, COD_ANALISTA_S) VALUES
-('CT0001', '2023-01-01', '2023-12-31', NULL, 'vigente', 'CL00003', 'AS0001'),
-('CT0002', '2023-02-01', '2023-12-31', NULL, 'vigente', 'CL00004', 'AS0002'),
-('CT0003', '2023-03-01', '2023-12-31', NULL, 'vigente', 'CL00009', 'AS0003'),
-('CT0004', '2023-04-01', '2023-12-31', NULL, 'vigente', 'CL00005', 'AS0004'),
-('CT0005', '2023-05-01', '2023-12-31', NULL, 'vigente', 'CL00006', 'AS0005');
+('CT000003', '2023-03-05', '2024-03-04', '2024-02-28', 'resuelto', 'CL00003', 'AS0001'),
+('CT000004', '2023-04-20', '2025-04-19', '2024-12-15', 'resuelto', 'CL00004', 'AS0002'),
+('CT000005', '2023-05-18', '2024-05-17', '2024-05-01', 'resuelto', 'CL00005', 'AS0003'),
+('CT000006', '2023-06-15', '2026-06-14', '2024-07-30', 'resuelto', 'CL00006', 'AS0004'),
+('CT000009', '2023-09-12', '2024-09-11', '2024-08-30', 'resuelto', 'CL00009', 'AS0005');
 
--- Inserts para la tabla Liquidacion
-INSERT INTO Liquidacion (COD_LIQUIDACION, FECHA_EMISION, FECHA_LIM_OBS, FECHA_FINALIZACION, MONTO_DEUDA_ACUM, MONTO_GARANTIAS, MONTO_COMISIONES, COD_CLIENTE, COD_ANALISTA_AC) VALUES
-('LQ0001', '2023-01-05', '2023-01-10', NULL, 5000.00, 1000.00, 200.00, 'CL00003', 'AC0001'),
-('LQ0002', '2023-02-05', '2023-02-10', NULL, 3000.00, 800.00, 150.00, 'CL00004', 'AC0002'),
-('LQ0003', '2023-03-05', '2023-03-10', NULL, 1500.00, 500.00, 100.00, 'CL00009', 'AC0003'),
-('LQ0004', '2023-04-05', '2023-04-10', NULL, 3500.00, 700.00, 120.00, 'CL00005', 'AC0004'),
-('LQ0005', '2023-05-05', '2023-05-10', NULL, 2500.00, 600.00, 130.00, 'CL00006', 'AC0005');
+-- Liquidaciones para clientes liquidados (Distribuidor E y F)
+INSERT INTO Liquidacion (COD_LIQUIDACION, FECHA_EMISION, TIPO_LIQ, FECHA_LIM_OBS, FECHA_FINALIZACION, MONTO_DEUDA_ACUM, MONTO_GARANTIAS, MONTO_COMISIONES, COD_CLIENTE, COD_ANALISTA_AC) VALUES
+('LQ0001', '2024-05-05', 'pre-liquidacion', '2024-07-04', '2024-11-01', 3500.00, 1750.00, 100.00, 'CL00005', 'AC0004'),
+('LQ0002', '2024-11-01', 'liquidacion final', '2024-11-06', '2024-11-11', 3500.00, 1750.00, 100.00, 'CL00005', 'AC0004'),
+('LQ0003', '2024-08-05', 'pre-liquidacion', '2024-10-04', '2025-02-01', 2000.00, 1000.00, 150.00, 'CL00006', 'AC0001'),
+('LQ0004', '2025-02-01', 'liquidacion final', '2025-02-06', '2025-02-11', 2000.00, 1000.00, 150.00, 'CL00006', 'AC0001');
 
--- Inserts para la tabla Observacion
+-- Liquidaciones para clientes en proceso de liquidación (Distribuidor C, D e I)
+INSERT INTO Liquidacion (COD_LIQUIDACION, FECHA_EMISION, TIPO_LIQ, FECHA_LIM_OBS, FECHA_FINALIZACION, MONTO_DEUDA_ACUM, MONTO_GARANTIAS, MONTO_COMISIONES, COD_CLIENTE, COD_ANALISTA_AC) VALUES
+('LQ0005', '2024-03-04', 'pre-liquidacion', '2024-05-03', '2024-08-31', 8000.00, 4000.00, 200.00, 'CL00003', 'AC0002'),
+('LQ0006', '2024-12-25', 'pre-liquidacion', '2025-02-23', '2025-06-23', 6000.00, 3000.00, 150.00, 'CL00004', 'AC0004'),
+('LQ0007', '2024-09-07', 'pre-liquidacion', '2024-11-06', '2025-03-06', 1500.00, 200.00, 50.00, 'CL00009', 'AC0001'),
+('LQ0008', '2025-03-06', 'liquidacion final', '2025-03-11', '2025-03-16', 1500.00, 200.00, 50.00, 'CL00009', 'AC0001');
+
+-- Observaciones para clientes liquidados y en proceso de liquidación
 INSERT INTO Observacion (COD_OBSERVACION, FECHA_OBS, FECHA_ABS, DESCRIPCION, COD_LIQUIDACION, COD_CLIENTE, COD_ANALISTA_AC) VALUES
-('OBS0001', '2023-01-06', NULL, 'Primera observación de liquidación', 'LQ0001', 'CL00003', 'AC0001'),
-('OBS0002', '2023-02-06', NULL, 'Segunda observación de liquidación', 'LQ0002', 'CL00004', 'AC0002'),
-('OBS0003', '2023-03-06', NULL, 'Tercera observación de liquidación', 'LQ0003', 'CL00009', 'AC0003'),
-('OBS0004', '2023-04-06', NULL, 'Cuarta observación de liquidación', 'LQ0004', 'CL00005', 'AC0004'),
-('OBS0005', '2023-05-06', NULL, 'Quinta observación de liquidación', 'LQ0005', 'CL00006', 'AC0005');
+('OBS0001', '2024-06-01', '2024-06-02', 'Observación sobre la pre-liquidación.', 'LQ0001', 'CL00005', 'AC0004'),  -- Observación para Distribuidor E sobre su pre-liquidación
+('OBS0002', '2024-09-01', '2024-09-02', 'Observación sobre la pre-liquidación.', 'LQ0003', 'CL00006', 'AC0001'),  -- Observación para Distribuidor F sobre su pre-liquidación
+('OBS0003', '2025-02-05', '2025-02-06', 'Observación sobre la liquidación final.', 'LQ0004', 'CL00006', 'AC0001'),  -- Observación para Distribuidor F sobre su liquidación final
+('OBS0004', '2024-12-30', '2024-12-31', 'Observación sobre la pre-liquidación.', 'LQ0006', 'CL00004', 'AC0004'),  -- Observación para Distribuidor D sobre su pre-liquidación
+('OBS0005', '2025-03-10', '2025-03-11', 'Observación sobre la liquidación final.', 'LQ0008', 'CL00009', 'AC0001');  -- Observación para Distribuidor I sobre su liquidación final
 
 --INSERT COBRANZA
 
