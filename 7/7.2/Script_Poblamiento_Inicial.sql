@@ -39,8 +39,6 @@ JOIN Cliente C ON D.COD_CLIENTE = C.COD_CLIENTE
 JOIN Dim_Tiempo T ON D.FECHA_VENCIMIENTO = T.FECHA;    
 -- INSERT PARA LAS TABLAS 
 
---INSERT EQUIPOS Y RECARGAS 
-
 -- Inserts para la tabla Cliente
 INSERT INTO Cliente (COD_CLIENTE, NOMBRE, RAZON_SOCIAL, TELEFONO, CORREO_EMPRESA, DIRECCION_CLIENTE, CREDITO_MAXIMO, ESTADO_CLIENTE, FECHA_REGISTRO, LINEA_CREDITO, CLASE_PERSONA, REGION, REP_LEGAL) VALUES
 ('CL00001', 'Distribuidor A', 'Distribuciones A S.A.C.', '123456789', 'distribuidora@a.com', 'Av. Siempre Viva 123', 5000.00, 'OPERATIVO CON MOVIMIENTO', '2023-01-15', 2500.00, 'Jurídica', 'Lima', 'Juan Pérez'),
@@ -54,70 +52,6 @@ INSERT INTO Cliente (COD_CLIENTE, NOMBRE, RAZON_SOCIAL, TELEFONO, CORREO_EMPRESA
 ('CL00009', 'Distribuidor I', 'Importaciones I S.A.C.', '852369741', 'distribuidorI@i.com', 'Calle Real 555', 3000.00, 'PROCESO DE LIQUIDACION', '2023-09-12', 1500.00, 'Natural', 'Huancayo', 'Luis Vargas'),
 ('CL00010', 'Distribuidor J', 'Servicios J S.A.C.', '741258963', 'distribuidorJ@j.com', 'Av. Independencia 888', 9000.00, 'OPERATIVO CON MOVIMIENTO', '2023-10-01', 4500.00, 'Jurídica', 'Moquegua', 'Patricia Ruiz');
 
--- Inserts para la tabla Recarga
-INSERT INTO Recarga (COD_RECARGA, FECHA_SOLICITUD_RECARGA, MONTO_RECARGA, ESTADO_RECARGA, FECHA_LIBERACION_RECARGA) VALUES
-('RC000001', '2023-01-20', 1000.00, 'VALIDADA', '2023-01-21'),
-('RC000002', '2023-02-12', 500.00, 'PENDIENTE', NULL),
-('RC000003', '2023-03-07', 1500.00, 'VALIDADA', '2023-03-08'),
-('RC000004', '2023-04-22', 2000.00, 'RECHAZADA', NULL),
-('RC000005', '2023-05-15', 2500.00, 'VALIDADA', '2023-05-16'),
-('RC000006', '2023-06-25', 1200.00, 'PENDIENTE', NULL),
-('RC000007', '2023-07-14', 800.00, 'VALIDADA', '2023-07-15'),
-('RC000008', '2023-08-30', 3000.00, 'RECHAZADA', NULL),
-('RC000009', '2023-09-01', 600.00, 'VALIDADA', '2023-09-02'),
-('RC000010', '2023-10-05', 900.00, 'PENDIENTE', NULL);
-
--- Inserts para la tabla Pedido
-INSERT INTO Pedido (COD_PEDIDO, FECHA_PEDIDO, CANTIDAD_TOTAL, ESTADO_PEDIDO, FECHA_ENTREGA, METODO_PAGO, OBSERVACIONES, DEMORA_PEDIDO, COD_CLIENTE, COD_RECARGA) VALUES
-('PD000001', '2023-01-22', 10, 'COMPLETADO', '2023-01-25', 'Transferencia', 'Pedido completado con éxito.', 3, 'CL00001', 'RC000001'),
-('PD000002', '2023-02-15', 5, 'CANCELADO', '2023-02-20', 'Efectivo', 'Pedido cancelado por falta de stock.', 0, 'CL00002', 'RC000002'),
-('PD000003', '2023-03-10', 15, 'PENDIENTE', NULL, 'Tarjeta', 'En espera de aprobación.', 5, 'CL00003', 'RC000003'),
-('PD000004', '2023-04-25', 7, 'PENDIENTE', NULL, 'Efectivo', 'En espera de validación.', 2, 'CL00004', 'RC000004'),
-('PD000005', '2023-05-20', 12, 'COMPLETADO', '2023-05-22', 'Transferencia', 'Pedido completado.', 1, 'CL00005', 'RC000005'),
-('PD000006', '2023-06-30', 20, 'COMPLETADO', '2023-07-01', 'Transferencia', 'Pedido procesado correctamente.', 0, 'CL00006', 'RC000006'),
-('PD000007', '2023-07-10', 8, 'PENDIENTE', NULL, 'Efectivo', 'En espera de aprobación.', 4, 'CL00007', 'RC000007'),
-('PD000008', '2023-08-15', 3, 'COMPLETADO', '2023-08-18', 'Tarjeta', 'Pedido completado.', 2, 'CL00008', 'RC000008'),
-('PD000009', '2023-09-10', 5, 'PENDIENTE', NULL, 'Efectivo', 'En espera de validación.', 3, 'CL00009', 'RC000009'),
-('PD000010', '2023-10-01', 9, 'COMPLETADO', '2023-10-05', 'Transferencia', 'Pedido finalizado.', 1, 'CL00010', 'RC000010');
-
--- Inserts para la tabla Equipo
-INSERT INTO Equipo (COD_EQUIPO, NOMBRE_EQUIPO, MARCA, MODELO, CATEGORIA, PRECIO_UNITARIO, CANTIDAD_STOCK) VALUES
-('EQ000001', 'Equipo A', 'Marca A', 'Modelo A1', 'Categoria A', 1000.00, 50),
-('EQ000002', 'Equipo B', 'Marca B', 'Modelo B1', 'Categoria B', 1500.00, 30),
-('EQ000003', 'Equipo C', 'Marca C', 'Modelo C1', 'Categoria C', 2000.00, 20),
-('EQ000004', 'Equipo D', 'Marca D', 'Modelo D1', 'Categoria D', 2500.00, 10),
-('EQ000005', 'Equipo E', 'Marca E', 'Modelo E1', 'Categoria E', 3000.00, 5),
-('EQ000006', 'Equipo F', 'Marca F', 'Modelo F1', 'Categoria F', 1200.00, 25),
-('EQ000007', 'Equipo G', 'Marca G', 'Modelo G1', 'Categoria G', 1800.00, 15),
-('EQ000008', 'Equipo H', 'Marca H', 'Modelo H1', 'Categoria H', 2200.00, 8),
-('EQ000009', 'Equipo I', 'Marca I', 'Modelo I1', 'Categoria I', 1400.00, 18),
-('EQ000010', 'Equipo J', 'Marca J', 'Modelo J1', 'Categoria J', 1600.00, 12);
-
--- Inserts para la tabla Equipo_Pedido
-INSERT INTO Pedido_Equipo (COD_PEDIDO_EQUIPO, COD_PEDIDO, COD_EQUIPO, CANTIDAD_PEDIDA) VALUES
-('PE000001', 'PD000001', 'EQ000001', 5),
-('PE000002', 'PD000001', 'EQ000002', 5),
-('PE000003', 'PD000002', 'EQ000003', 5), 
-('PE000004', 'PD000003', 'EQ000004', 10),
-('PE000005', 'PD000003', 'EQ000005', 5);
-
--- Inserts para la tabla SAP
-INSERT INTO SAP (COD_SAP, FECHA_VALIDACION, ESTADO_VALIDACION, OBSERVACION_VALIDACION, LIMITE_CREDITO, NUM_REFERENCIA_SAP_SUNAT, COD_PEDIDO) VALUES
-('SAP0001', '2023-01-23', 'VALIDADA', 'Validación exitosa para el pedido PD000001.', 5000.00, 'REF0001', 'PD000001'),
-('SAP0002', '2023-02-16', 'RECHAZADA', 'Pedido PD000002 rechazado.', 0.00, 'REF0002', 'PD000002'),
-('SAP0003', '2023-03-11', 'VALIDADA', 'Validación exitosa para el pedido PD000003.', 8000.00, 'REF0003', 'PD000003');
-
--- Inserts para la tabla Factura
-INSERT INTO Factura (COD_FACTURA, MONTO_FACTURA, FECHA_FACTURA, ESTADO_FACTURA, NUM_REFERENCIA_SUNAT, COD_SAP) VALUES
-('FAC0001', 16000.00, '2023-01-26', 'EMITIDA', 'REF0001', 'SAP0001'),
-('FAC0002', 0.00, '2023-02-21', 'ANULADA', 'REF0002', 'SAP0002'),  
-('FAC0003', 15000.00, '2023-03-12', 'EMITIDA', 'REF0003', 'SAP0003');
-
---Inserts para la tabla SUNAT
-INSERT INTO SUNAT (COD_SUNAT, FECHA_ASIGNACION, MONTO_SUNAT, NUM_REFERENCIA_SUNAT, COD_SAP) VALUES
-('SUNAT0001', '2023-01-27', 16000.00, 'REF0001', 'SAP0001'),
-('SUNAT0002', '2023-02-22', 0.00, 'REF0002', 'SAP0002'),  
-('SUNAT0003', '2023-03-13', 15000.00, 'REF0003', 'SAP0003');
 
 --INSERT LIQUIDACION
 
@@ -310,3 +244,128 @@ VALUES
 ('NOTC009', '2024-07-15', 'Visita presencial', 'COZ0000001', 'CL00003', 'DEU00000001'),
 ('NOTC010', '2024-08-01', 'Carta de cobranza', 'COZ0000001', 'CL00003', 'DEU00000001'),
 ('NOTC011', '2024-09-01', 'Derivación a área legal', 'COZ0000001', 'CL00003', 'DEU00000001');
+
+-- Insert para modulos de equipos y modulo de recargas (Correciones)
+-- En este caso se realiza las correcciones y se detalla mas el funcionamiento y relacion de las tablas:
+
+-- Insert Cliente
+
+INSERT INTO Cliente (COD_CLIENTE, NOMBRE, RAZON_SOCIAL, TELEFONO, CORREO_EMPRESA, DIRECCION_CLIENTE, CREDITO_MAXIMO, ESTADO_CLIENTE, FECHA_REGISTRO, LINEA_CREDITO, CLASE_PERSONA, REGION, REP_LEGAL) VALUES
+('CL00001', 'Distribuidor A', 'Distribuciones A S.A.C.', '923456789', 'distribuidora@a.com', 'Av. Siempre Viva 123', 5000, 'OPERATIVO CON MOVIMIENTO', '2023-01-15', 2500, 'Jurídica', 'Lima', 'Juan Pérez'),
+('CL00002', 'Distribuidor B', 'Suministros B E.I.R.L.', '987654321', 'distribuidorb@b.com', 'Calle Falsa 456', 3000, 'OPERATIVO SIN MOVIMIENTO', '2023-02-10', 1500, 'Jurídica', 'Cusco', 'María López'),
+('CL00003', 'Distribuidor C', 'Importaciones C S.A.C.', '956789123', 'distribuidorC@c.com', 'Av. Central 789', 8000, 'PROCESO DE LIQUIDACION', '2023-03-05', 4000, 'Natural', 'Arequipa', 'Carlos García'),
+('CL00004', 'Distribuidor D', 'Servicios D S.A.C.', '921654987', 'distribuidoresD@d.com', 'Calle Verde 321', 6000, 'PROCESO DE LIQUIDACION', '2023-04-20', 3000, 'Jurídica', 'Piura', 'Luisa Sánchez'),
+('CL00005', 'Distribuidor E', 'Productos E S.A.', '923123123', 'distribuidore@e.com', 'Av. Libertad 111', 0, 'LIQUIDADO', '2023-05-18', 0, 'Natural', 'Trujillo', 'Alberto Castillo'),
+('CL00006', 'Distribuidor F', 'Comercial F E.I.R.L.', '987987987', 'distribuidorF@f.com', 'Av. Puno 333', 0, 'LIQUIDADO', '2023-06-15', 0, 'Jurídica', 'Iquitos', 'Ana Martínez'),
+('CL00007', 'Distribuidor G', 'Distribuciones G S.A.C.', '947258369', 'distribuidorg@g.com', 'Calle Lima 222', 2000, 'OPERATIVO CON MOVIMIENTO', '2023-07-10', 1000, 'Natural', 'Tacna', 'Pedro Jiménez'),
+('CL00008', 'Distribuidor H', 'Suministros H E.I.R.L.', '963258741', 'distribuidorH@h.com', 'Av. Arequipa 444', 5000, 'OPERATIVO SIN MOVIMIENTO', '2023-08-22', 2500, 'Jurídica', 'Chiclayo', 'Gabriela Torres'),
+('CL00009', 'Distribuidor I', 'Importaciones I S.A.C.', '952369741', 'distribuidorI@i.com', 'Calle Real 555', 3000, 'PROCESO DE LIQUIDACION', '2023-09-12', 1500, 'Natural', 'Huancayo', 'Luis Vargas'),
+('CL00010', 'Distribuidor J', 'Servicios J S.A.C.', '941258963', 'distribuidorJ@j.com', 'Av. Independencia 888', 9000, 'OPERATIVO CON MOVIMIENTO', '2023-10-01', 4500, 'Jurídica', 'Moquegua', 'Patricia Ruiz');
+
+--Insert Pedido
+
+INSERT INTO Pedido (COD_PEDIDO, COD_CLIENTE, FECHA_REG_PEDIDO, FECHA_EVALUACION, ESTADO_PEDIDO, METODO_PAGO, OBSERVACIONES, TIPO_PEDIDO) VALUES
+('PD000001', 'CL00001', '2024-01-05', '2024-01-07', 'Aceptado', 'Crédito', 'Aceptado', 'Equipo'),
+('PD000002', 'CL00001', '2024-01-10', '2024-01-12', 'Aceptado', 'Contado', 'Aceptado', 'Equipo'),
+('PD000003', 'CL00002', '2024-01-15', '2024-01-17', 'Aceptado', 'Crédito', 'Aceptado', 'Recarga'),
+('PD000004', 'CL00001', '2024-01-20', '2024-01-22', 'Rechazado', 'Transferencia', 'Credito insuficiente', 'Recarga'),
+('PD000005', 'CL00002', '2024-01-25', '2024-01-27', 'Rechazado', 'Contado', 'Credito insuficiente', 'Equipo'),
+('PD000006', 'CL00003', '2024-02-01', '2024-02-03', 'Rechazado', 'Crédito', 'En proceso de liquidacion', 'Equipo'),
+('PD000007', 'CL00004', '2024-02-05', '2024-02-07', 'Rechazado', 'Contado', 'En proceso de liquidacion', 'Equipo'),
+('PD000008', 'CL00005', '2024-02-10', '2024-02-12', 'Rechazado', 'Transferencia', 'Liquidado', 'Recarga'),
+('PD000009', 'CL00006', '2024-02-15', '2024-02-17', 'Rechazado', 'Crédito', 'Liquidado', 'Equipo'),
+('PD000010', 'CL00004', '2024-02-20', '2024-02-22', 'Rechazado', 'Contado', 'En proceso de liquidacion', 'Equipo'),
+('PD000011', 'CL00007', '2024-03-01', '2024-03-03', 'Aceptado', 'Crédito', 'Aceptado', 'Recarga'),
+('PD000012', 'CL00008', '2024-03-05', '2024-03-07', 'Rechazado', 'Transferencia', 'Deuda pendiente', 'Equipo'),
+('PD000013', 'CL00002', '2024-03-10', '2024-03-12', 'Rechazado', 'Contado', 'Credito insuficiente', 'Recarga'),
+('PD000014', 'CL00009', '2024-03-15', '2024-03-17', 'Rechazado', 'Crédito', 'En proceso de liquidacion', 'Recarga'),
+('PD000015', 'CL00004', '2024-03-20', '2024-03-22', 'Rechazado', 'Transferencia', 'En proceso de liquidacion', 'Recarga'),
+('PD000016', 'CL00006', '2024-03-25', '2024-03-27', 'Rechazado', 'Contado', 'Liquidado', 'Equipo'),
+('PD000017', 'CL00007', '2024-04-01', '2024-04-03', 'Aceptado', 'Crédito', 'Aceptado', 'Equipo'),
+('PD000018', 'CL00008', '2024-04-05', '2024-04-07', 'Rechazado', 'Transferencia', 'Deuda pendiente', 'Equipo'),
+('PD000019', 'CL00009', '2024-04-10', '2024-04-12', 'Rechazado', 'Contado', 'En proceso de liquidacion', 'Recarga'),
+('PD000020', 'CL00010', '2024-04-15', '2024-04-17', 'Aceptado', 'Crédito', 'Aceptado', 'Recarga');
+
+--Los clientes que se encuentran en ESTADO_PEDIDO: "En proceso de liquidcacion y Liquidado" no pueden realizar pedidos, automaticamente se les rechaza.
+-- Las observaciones se alineas a los estados del cliente.ATTACH
+-- Hay una diferenciacion en el pedido donde se divide por tipo (Recarga o Equipo), son pedidos individuales que se reciben.
+
+-- Insert Recarga
+
+INSERT INTO Recarga (COD_RECARGA, COD_PEDIDO, FECHA_SOLICITUD_RECARGA, MONTO_RECARGA, ESTADO_RECARGA, FECHA_LIBERACION_RECARGA) VALUES
+('RC000001', 'PD000003', '2024-01-15', 1000.00, 'Aceptado', '2024-01-17'),
+('RC000002', 'PD000004', '2024-01-20', 100.00, 'Rechazado', NULL),
+('RC000003', 'PD000008', '2024-02-10', 2000.00, 'Rechazado', NULL),
+('RC000004', 'PD000011', '2024-03-01', 500.00, 'Aceptado', '2024-03-03'),
+('RC000005', 'PD000013', '2024-03-10', 300.00, 'Rechazado', NULL),
+('RC000006', 'PD000015', '2024-03-20', 500.00, 'Rechazado', NULL),
+('RC000007', 'PD000019', '2024-04-10', 90.00, 'Rechazado', NULL),
+('RC000008', 'PD000020', '2024-04-15', 2000.00, 'Aceptado', '2024-04-17');
+
+-- Insert Equipo
+
+INSERT INTO Equipo (COD_EQUIPO, NOMBRE_EQUIPO, MARCA, MODELO, CATEGORIA, PRECIO_UNITARIO, CANTIDAD_STOCK) VALUES
+('87654321', 'Router Huawei WiFi 6', 'Huawei', 'AX3', 'Router', 350.00, 120),
+('34567890', 'Modem Claro 4G LTE', 'Claro', 'LTE X500', 'Modem', 500.00, 75),
+('12348765', 'Claro Mifi Portable', 'Claro', 'E5576', 'Router Portátil', 300.00, 90),
+('87651234', 'Cargador Claro Rápido', 'Claro', 'EP-TA20', 'Accesorios', 180.00, 100),
+('23454321', 'Claro SIM Prepago', 'Claro', 'Prepago', 'Telefonía Prepago', 20.00, 500),
+('34565432', 'Modem Huawei Claro LTE', 'Huawei', 'B310s', 'Modem', 450.00, 70),
+('56787654', 'Audífonos Inalámbricos Claro', 'Claro', 'BTHS200', 'Accesorios', 200.00, 85),
+('67899876', 'Adaptador Claro para Cable Ethernet', 'Claro', 'ADAPT-ETH', 'Accesorios', 80.00, 150),
+('78901234', 'Claro SIM Chip Postpago', 'Claro', 'Postpago', 'Telefonía Postpago', 25.00, 400),
+('89012345', 'Claro Power Bank 10000mAh', 'Claro', 'PB10000', 'Accesorios', 300.00, 60);
+
+-- Insert Pedido_Equipo
+
+INSERT INTO Pedido_Equipo (COD_PEDIDO_EQUIPO, COD_PEDIDO, COD_EQUIPO, CANTIDAD_PEDIDA) VALUES
+('PEQ00001', 'PD000001', '56787654', 2),
+('PEQ00002', 'PD000001', '23456789', 3),
+('PEQ00003', 'PD000002', '56789012', 1),
+('PEQ00004', 'PD000002', '34567890', 4),
+('PEQ00005', 'PD000006', '87654321', 4),
+('PEQ00006', 'PD000007', '12345678', 2),
+('PEQ00007', 'PD000009', '23456789', 5),
+('PEQ00008', 'PD000010', '56789012', 3),
+('PEQ00009', 'PD000017', '34567890', 2),
+('PEQ00010', 'PD000016', '87654321', 7),
+('PEQ00011', 'PD000018', '87653321', 2);
+
+-- La relacion de equipo y pedido es de muchos a muchos y se crea esta tabla para poder reducir esa complejidad y gestionar mejor los pedidos de equipos.
+-- Insert Notificacion
+
+INSERT INTO Notificacion (COD_NOTIFICACION, COD_PEDIDO, FECHA_NOTIFICACION, OBSERVACION_NOTIFICACION, TIPO_NOTIFICACION) VALUES
+('N0001', 'PD000001', '2024-01-07', 'Se acepto su Equipo con exito.', 'Aceptado'),
+('N0002', 'PD000002', '2024-01-12', 'Se acepto su Equipo con exito.', 'Aceptado'),
+('N0003', 'PD000003', '2024-01-17', 'Se acepto su Recarga con exito.', 'Aceptado'),
+('N0004', 'PD000004', '2024-01-22', 'Se ha rechazado su Recarga debido a Credito insuficiente.', 'Rechazado'),
+('N0005', 'PD000005', '2024-01-27', 'Se ha rechazado su Equipo debido a Credito insuficiente.', 'Rechazado'),
+('N0006', 'PD000006', '2024-02-03', 'Se ha rechazado su Equipo debido a En proceso de liquidacion.', 'Rechazado'),
+('N0007', 'PD000007', '2024-02-07', 'Se ha rechazado su Equipo debido a En proceso de liquidacion.', 'Rechazado'),
+('N0008', 'PD000008', '2024-02-12', 'Se ha rechazado su Recarga debido a Liquidado.', 'Rechazado'),
+('N0009', 'PD000009', '2024-02-17', 'Se ha rechazado su Equipo debido a Liquidado.', 'Rechazado'),
+('N0010', 'PD000010', '2024-02-22', 'Se ha rechazado su Equipo debido a Liquidado.', 'Rechazado'),
+('N0011', 'PD000011', '2024-03-03', 'Se acepto su Recarga con exito.', 'Aceptado'),
+('N0012', 'PD000012', '2024-03-07', 'Se ha rechazado su Equipo debido a Deuda pendiente.', 'Rechazado'),
+('N0013', 'PD000013', '2024-03-12', 'Se ha rechazado su Recarga debido a Credito insuficiente.', 'Rechazado'),
+('N0014', 'PD000014', '2024-03-17', 'Se ha rechazado su Recarga debido a En proceso de liquidacion.', 'Rechazado'),
+('N0015', 'PD000015', '2024-03-22', 'Se ha rechazado su Recarga debido a En proceso de liquidacion.', 'Rechazado'),
+('N0016', 'PD000016', '2024-03-27', 'Se ha rechazado su Equipo debido a Liquidado.', 'Rechazado'),
+('N0017', 'PD000017', '2024-04-03', 'Se acepto su Equipo con exito.', 'Aceptado'),
+('N0018', 'PD000018', '2024-04-07', 'Se ha rechazado su Equipo debido a Deuda pendiente.', 'Rechazado'),
+('N0019', 'PD000019', '2024-04-12', 'Se ha rechazado su Recarga debido a En proceso de liquidacion.', 'Rechazado'),
+('N0020', 'PD000020', '2024-04-17', 'Se acepto su Recarga con exito.', 'Aceptado');
+
+-- Em base al proceso de evaluacion se notifica al cliente si su pedido fue aprobado o rechazo y se le justifica el porque.
+
+-- Insert Factura
+
+INSERT INTO Factura (COD_FACTURA, COD_PEDIDO, MONTO_FACTURA, FECHA_FACTURA, NUM_REFERENCIA_SUNAT) VALUES
+('F00001', 'PD000001', 1000, '2024-01-08', '12345678'),
+('F00002', 'PD000002', 500, '2024-01-13', '87654321'),
+('F00003', 'PD000003', 1000, '2024-01-18', '23456789'),
+('F00004', 'PD0010011', 500, '2024-03-04', '45678901'),
+('F00007', 'PD001007', 500, '2024-04-04', '89012345'),
+('F00009', 'PD002000', 2000, '2024-04-18', '1234567');
+
+-- La Factura solo registra los pedidos que fueron aprobados y registra NUM_REFERENCIA_SUNAT que sirve para referencia la factura en el registro de SUNAT.
