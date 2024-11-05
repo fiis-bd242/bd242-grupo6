@@ -41,7 +41,6 @@ DROP TABLE IF exists Departamento_Desembolso;
 
 -- CREATE TABLE -> Modulo de equipos y recargas
 
-
 -- Tabla Cliente
 CREATE TABLE Cliente (
     COD_CLIENTE VARCHAR(7) PRIMARY KEY,
@@ -123,6 +122,7 @@ CREATE TABLE Factura (
     NUM_REFERENCIA_SUNAT VARCHAR(10) NOT NULL,
     FOREIGN KEY (COD_PEDIDO) REFERENCES Pedido(COD_PEDIDO)  -- Cambiado a Pedido
 );
+
 
 -- CREATE TABLE -> Modulo de liquidacion
 
