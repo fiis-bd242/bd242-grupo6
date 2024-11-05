@@ -299,7 +299,7 @@ INSERT INTO Recarga (COD_RECARGA, COD_PEDIDO, FECHA_SOLICITUD_RECARGA, MONTO_REC
 ('RC000004', 'PD000011', '2024-03-01', 500.00, 'Aceptado', '2024-03-03'),
 ('RC000005', 'PD000013', '2024-03-10', 300.00, 'Rechazado', NULL),
 ('RC000006', 'PD000015', '2024-03-20', 500.00, 'Rechazado', NULL),
-('RC000007', 'PD000019', '2024-04-10', 90.00, 'Rechazado', NULL),
+('RC000007', 'PD000019', '2024-04-10', 190.00, 'Rechazado', NULL),
 ('RC000008', 'PD000020', '2024-04-15', 2000.00, 'Aceptado', '2024-04-17');
 
 -- Insert Equipo
@@ -332,6 +332,7 @@ INSERT INTO Pedido_Equipo (COD_PEDIDO_EQUIPO, COD_PEDIDO, COD_EQUIPO, CANTIDAD_P
 ('PEQ00011', 'PD000018', '87653321', 2);
 
 -- La relacion de equipo y pedido es de muchos a muchos y se crea esta tabla para poder reducir esa complejidad y gestionar mejor los pedidos de equipos.
+
 -- Insert Notificacion
 
 INSERT INTO Notificacion (COD_NOTIFICACION, COD_PEDIDO, FECHA_NOTIFICACION, OBSERVACION_NOTIFICACION, TIPO_NOTIFICACION) VALUES
@@ -366,6 +367,6 @@ INSERT INTO Factura (COD_FACTURA, COD_PEDIDO, MONTO_FACTURA, FECHA_FACTURA, NUM_
 ('F00003', 'PD000003', 1000, '2024-01-18', '23456789'),
 ('F00004', 'PD0010011', 500, '2024-03-04', '45678901'),
 ('F00007', 'PD001007', 500, '2024-04-04', '89012345'),
-('F00009', 'PD002000', 2000, '2024-04-18', '1234567');
+('F00009', 'PD002000', 2000, '2024-04-18', '11234567');
 
 -- La Factura solo registra los pedidos que fueron aprobados y registra NUM_REFERENCIA_SUNAT que sirve para referencia la factura en el registro de SUNAT.
