@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación y Liberación de Equipos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #8B0000;
+        }
+        .tabla-contenedor {
+            max-width: 90%; /* Ancho máximo del contenedor */
+            height: 600px; /* Altura fija del contenedor */
+            overflow-y: auto; /* Scroll vertical */
+            border: 2px solid #ddd; /* Borde del marco */
+            border-radius: 5px; /* Esquinas redondeadas */
+            background-color: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para darle profesionalismo */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #8B0000;
+            color: #fff;
+            font-weight: bold;
+            position: sticky; /* Fija los encabezados */
+            top: 0;
+            z-index: 1; /* Asegura que los encabezados estén por encima */
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .icono {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .icono a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>EVALUACIÓN Y LIBERACIÓN DE EQUIPOS</h2>
+    <h2>Solicitud de pedidos de equipos:</h2>
+
+    <!-- Formulario de búsqueda -->
+    <form method="GET" action="{% url 'modulo_equipos' %}">
+        <input type="text" name="search_query" placeholder="Buscar..." value="{{ request.GET.search_query }}">
+        <select name="filter_field">
+            <option value="NOMBRE" {% if request.GET.filter_field == "NOMBRE" %}selected{% endif %}>Nombre Cliente</option>
+            <option value="COD_CLIENTE" {% if request.GET.filter_field == "COD_CLIENTE" %}selected{% endif %}>Código Cliente</option>
+            <option value="ESTADO_PEDIDO" {% if request.GET.filter_field == "ESTADO_PEDIDO" %}selected{% endif %}>Estado Pedido</option>
+        </select>
+        <button type="submit">Buscar</button>
+        <a href="{% url 'modulo_equipos' %}">Reiniciar</a>
+    </form>
+
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>COD. PEDIDO</th>
+                    <th>COD. CLIENTE</th>
+                    <th>NOMBRE CLIENTE</th>
+                    <th>ESTADO PEDIDO</th>
+                    <th>FECHA REGISTRO</th>
+                    <th>ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos_structured %}
+                <tr>
+                    <td>{{ pedido.COD_PEDIDO }}</td>
+                    <td>{{ pedido.COD_CLIENTE }}</td>
+                    <td>{{ pedido.NOMBRE }}</td>
+                    <td>{{ pedido.ESTADO_PEDIDO }}</td>
+                    <td>{{ pedido.FECHA_REG_PEDIDO }}</td>
+                    <td>
+                        <a href="{% url 'detalle_pedido' pedido.COD_PEDIDO %}" title="Ver detalles">
+                            <img src="/static/app/icono.png" alt="Detalles" class="icono">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2><a href="{% url 'index' %}">Volver a la página principal</a></h2>
+
+</body>
+</html>

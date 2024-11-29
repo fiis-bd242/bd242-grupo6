@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura del viewport, sin exceder */
+    overflow: hidden; /* Evita el scroll */
+}
+.sidebar .logo {
+    width: 100%; /* Asegura que el logo ocupe el ancho completo de la barra lateral */
+    text-align: center;
+    margin: 0; /* Elimina cualquier margen del contenedor del logo */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #a50606;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh; /* Limita la barra lateral al viewport */
+    overflow: hidden; /* Evita el scroll */
+}
+.sidebar .logo img {
+    width: 100%; /* Hace que el logo ocupe el ancho completo del contenedor */
+    height: auto; /* Mantiene la proporción del logo */
+    display: block; /* Elimina el espacio en línea alrededor de la imagen */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ff3333;
+}
+
+.sidebar ul li img {
+    width: 25px;
+    margin-right: 10px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.title-banner {
+    background-color: hsl(0, 0%, 100%);
+    padding: 20px;
+    text-align: center;
+    color: #070303; /* Rojo para el texto, ajusta si es necesario */
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
+     /*margin-left: 1; /* Ajusta según el ancho de la barra lateral */
+  
+}
+
+.fondo-imagen {
+    background-image: url("{% static 'app/claro-torre.jpeg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Evita el scroll */
+    
+    
+}
+.parrafo-texto p {
+    font-size: 1.5em; /* Tamaño de fuente */
+    color: #ffffff; /* Color de texto blanco */
+    line-height: 1.2; /* Reduce el espacio entre líneas */
+    
+    margin: 10px 0; /* Reduce el espacio vertical entre párrafos */
+
+}
+.cont-texto {
+    margin: 80px; /* Añade margen alrededor para que no toque los bordes de la ventana */
+    padding: 80px; /* Añade un espacio interior para separar el borde de la imagen */
+    text-align: center;
+}

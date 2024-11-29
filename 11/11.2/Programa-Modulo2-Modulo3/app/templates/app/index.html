@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Claro - Página Principal</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <!-- Incluye algún framework CSS como Bootstrap o personaliza CSS -->
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="{% static 'app/claro-logo.png' %}" alt="Claro Logo">
+            </div>
+            <ul>
+                <li><a href="{% url 'modulo_admision' %}">Admision</a></li>
+                <li><a href="{% url 'modulo_equipos' %}">Equipos</a></li>
+                <li><a href="{% url 'modulo_recargas' %}">Recargas</a></li>
+                <li><a href="{% url 'modulo_creditos' %}">Creditos</a></li>
+                <li><a href="{% url 'modulo_cobranzas' %}">Cobranzas</a></li>
+                <li><a href="{% url 'modulo_liquidacion' %}">Liquidacion</a></li>
+                <li><a href="{% url 'modulo_reporteria' %}">Reporteria</a></li>
+            </ul>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="content">
+            <div class="title-banner">
+                <h1>CRÉDITO Y COBRANZAS DE DISTRIBUIDORES</h1>
+            </div>
+            <div class="fondo-imagen">
+
+                <div class="cont-texto">
+                    <section class="parrafo-texto">
+
+                        <p>Claro Perú es subsidiaria de América Móvil, la empresa líder en servicios integrados de telecomunicaciones en Latinoamérica...</p>
+                        <p><em>"Mejorar la vida de los peruanos a través de las telecomunicaciones"</em></p>
+
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fondoImagen = document.querySelector('.fondo-imagen'); // Cambié la clase aquí
+            fondoImagen.style.backgroundImage = "url('{% static 'app/claro-torre.jpeg' %}')";
+        });
+    </script>
+</body>
+</html>

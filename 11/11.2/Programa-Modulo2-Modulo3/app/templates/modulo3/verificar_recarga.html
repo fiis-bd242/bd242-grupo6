@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Recarga</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f1f1; /* Fondo suave */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B0000; /* Rojo oscuro para el título */
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        form div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f5f5f5;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #8B0000; /* Rojo oscuro al hacer foco */
+            outline: none;
+        }
+
+        button {
+            background-color: #8B0000; /* Rojo oscuro para el botón */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #b22222; /* Rojo más brillante en hover */
+            transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+        }
+
+        button:active {
+            background-color: #7a1f1f; /* Rojo más oscuro cuando se hace clic */
+            transform: scale(1); /* Restaura el tamaño normal al hacer clic */
+        }
+    </style>
+</head>
+<body>
+    <h1>Verificar Recarga</h1>
+
+    <div class="form-container">
+        <form method="POST" action="{% url 'modulo3_actualizacion' cod_pedido=datos.codigo_pedido %}">
+            {% csrf_token %}
+            
+            <div>
+                <label for="observaciones">Observaciones:</label>
+                <input type="text" id="observaciones" name="observaciones" value="{{ datos.observaciones }}" maxlength="50" required>
+            </div>
+            
+            <div>
+                <label for="fecha_liberacion_recarga">Fecha de Liberación Recarga:</label>
+                <input type="date" id="fecha_liberacion_recarga" name="fecha_liberacion_recarga" value="{{ datos.fecha_liberacion_recarga }}" required>
+            </div>
+
+            <div>
+                <label for="estado_pedido">Estado Pedido:</label>
+                <select id="estado_pedido" name="estado_pedido">
+                    <option value="Aceptado" {% if datos.estado_pedido == 'Aceptado' %}selected{% endif %}>Aceptado</option>
+                    <option value="Rechazado" {% if datos.estado_pedido == 'Rechazado' %}selected{% endif %}>Rechazado</option>
+                    <option value="Pendiente" {% if datos.estado_pedido == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" id="confirmar">Confirmar</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

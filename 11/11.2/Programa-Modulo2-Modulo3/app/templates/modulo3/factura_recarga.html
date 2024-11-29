@@ -1,0 +1,162 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Recarga</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B0000;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .mensaje {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            color: #4CAF50; /* Verde para los mensajes de éxito */
+        }
+
+        .mensaje p {
+            font-weight: bold;
+        }
+
+        .factura-container {
+            background-color: #fff;
+            border: 2px solid #8B0000;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .factura-container h2 {
+            text-align: center;
+            color: #8B0000;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            display: inline-block;
+            background-color: #8B0000;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 1.1em;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #b22222; /* Rojo brillante al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <h1>Estado del Pedido</h1>
+    
+    <div class="mensaje">
+        <p>{{ mensaje }}</p>
+    </div>
+
+    {% if mensaje == "¡Felicidades! El equipo se liberó correctamente." %}
+        <div class="factura-container">
+            <h2>Detalles de la Factura de Recarga</h2>
+            <table>
+                <tr>
+                    <td><strong>Nombre del Cliente:</strong></td>
+                    <td>{{ nombre_cliente }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Código del Pedido:</strong></td>
+                    <td>{{ cod_pedido }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Código de la Factura:</strong></td>
+                    <td>{{ cod_factura }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Teléfono:</strong></td>
+                    <td>{{ telefono }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha de Registro del Pedido:</strong></td>
+                    <td>{{ fecha_reg_pedido }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha de Evaluación:</strong></td>
+                    <td>{{ fecha_evaluacion }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Código de Recarga:</strong></td>
+                    <td>{{ cod_recarga }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Monto de la Recarga:</strong></td>
+                    <td>{{ monto_recarga }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Línea de Crédito:</strong></td>
+                    <td>{{ linea_credito }}</td>
+                </tr>
+            </table>
+        </div>
+    {% elif mensaje == "El pedido ha sido rechazado correctamente." %}
+        <div class="mensaje">
+            <p>No se realizaron cambios, ya que el pedido ha sido rechazado.</p>
+        </div>
+    {% elif mensaje == "El estado del pedido está pendiente, no se realizaron cambios." %}
+        <div class="mensaje">
+            <p>El estado del pedido está pendiente, no se realizaron cambios.</p>
+        </div>
+    {% else %}
+        <div class="mensaje">
+            <p>Hubo un error al procesar el pedido. Por favor, intenta nuevamente.</p>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'modulo_recargas' %}">Volver al módulo de recargas</a>
+</body>
+</html>

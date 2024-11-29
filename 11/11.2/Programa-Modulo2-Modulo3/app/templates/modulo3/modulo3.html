@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido al Módulo de Recargas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em; /* Aumenté el tamaño del título */
+            color: #8B0000; /* Color rojo oscuro para el título */
+        }
+
+        /* Contenedor con scroll vertical */
+        .table-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: 500px; /* Altura fija para habilitar scroll vertical */
+            border: 5px solid #8B0000; /* Borde rojo oscuro más grueso */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #dc3545; /* Fondo rojo para los encabezados */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .no-records {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Barra de desplazamiento personalizada */
+        .table-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #8B0000; /* Rojo oscuro para la barra de desplazamiento */
+            border-radius: 5px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background-color: #f1f1f1; /* Fondo claro para el track de la barra */
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido al Módulo de Recargas</h1>
+    
+    <!-- Formulario de búsqueda -->
+    <section class="search-section">
+        <form method="get" action="{% url 'modulo_recargas' %}" class="search-form">
+            <div class="input-group">
+                <label for="cod_pedido">Buscar por código de pedido:</label>
+                <input type="text" id="cod_pedido" name="cod_pedido" placeholder="Código Pedido" value="{{ request.GET.cod_pedido }}">
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-search">Buscar</button>
+                <button type="submit" class="btn btn-reset">Reiniciar</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Tabla de recargas -->
+    <section class="table-section">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código Pedido</th>
+                        <th>Código Recarga</th>
+                        <th>Código Cliente</th>
+                        <th>Nombre Cliente</th>
+                        <th>Estado Pedido</th>
+                        <th>Monto Recarga</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dato in datos %}
+                    <tr>
+                        <td>{{ dato.cod_pedido }}</td>
+                        <td>{{ dato.cod_recarga }}</td>
+                        <td>{{ dato.cod_cliente }}</td>
+                        <td>{{ dato.nombre_cliente }}</td>
+                        <td>{{ dato.estado_pedido }}</td>
+                        <td>{{ dato.monto_recarga }}</td>
+                        <td>
+                            <a href="{% url 'modulo3_detalles' dato.cod_pedido %}">Ver detalles</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="no-records">No se encontraron recargas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    
+    <br>
+
+    <!-- Enlace para volver a la página principal -->
+    <section class="back-section">
+        <h2><a href="{% url 'index' %}">Volver a la página principal</a></h2>
+    </section>
+
+</body>
+</html>

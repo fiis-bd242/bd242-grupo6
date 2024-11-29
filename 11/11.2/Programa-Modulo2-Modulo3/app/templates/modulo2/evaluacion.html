@@ -1,0 +1,133 @@
+<!-- app/evaluacion.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación del Pedido</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4e0d5; /* Fondo beige similar al de la imagen */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        h2 {
+            color: #b21f2d; /* Rojo oscuro */
+            margin-bottom: 20px;
+        }
+        .info {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .status.accepted {
+            color: #fff;
+            background-color: #5bc0de; /* Verde claro */
+        }
+        .status.rejected {
+            color: #fff;
+            background-color: #d9534f; /* Rojo */
+        }
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .button {
+            background-color: #b21f2d; /* Rojo oscuro */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #a61d28; /* Rojo más oscuro */
+        }
+        .button:disabled {
+            background-color: #f0ad4e; /* Amarillo claro */
+            cursor: not-allowed;
+        }
+        .image-container {
+            margin-top: 30px;
+        }
+        .logo {
+            width: 150px; /* Tamaño ajustable para el logo */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Evaluación del Pedido</h2>
+
+        <div class="info">
+            <p><strong>Código de Pedido:</strong> {{ cod_pedido }}</p>
+            <br>
+            <p><strong>Estado del Pedido:</strong> 
+                {% if estado_pedido == 'Aceptado' %}
+                    <span class="status accepted">{{ estado_pedido }}</span>
+                {% else %}
+                    <span class="status rejected">{{ estado_pedido }}</span>
+                {% endif %}
+            </p>
+            <br>
+            <p><strong>Código de Cliente:</strong> {{ cod_cliente }}</p>
+            <br>
+            <p><strong>Fecha de Evaluación:</strong> {{ fecha_evaluacion }}</p>
+            <br>
+            <p><strong>Línea de Crédito:</strong> {{ linea_credito }}</p>
+            <br>
+        </div>
+
+        {% if estado_pedido == 'Aceptado' %}
+            <p>¡Pedido Evaluado Correctamente!</p>
+        {% else %}
+            <p>¡Pedido Rechazado!</p>
+        {% endif %}
+        <br>
+        <p>Generar:</p>
+<div class="buttons-container">
+    <a href="{% url 'factura' %}">
+        <button class="button">Factura</button>
+    </a>
+    <a href="{% url 'notificacion' %}">
+        <button class="button">Notificación</button>
+    </a>
+    <a href="{% url 'detalle_pedido' cod_pedido=cod_pedido %}">
+        <button class="button">Regresar</button>
+    </a>
+</div>
+
+        <div class="image-container">
+            <img src="{% static 'app/claro-logo.png' %}" alt="Logo Claro" class="logo">
+        </div>
+    </div>
+
+</body>
+</html>
