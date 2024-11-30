@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Reportes de Deudas</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa; /* Fondo suave */
+            color: #333; /* Texto oscuro */
+        }
+
+        /* Contenedor principal */
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        /* Título */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #333;
+        }
+
+        /* Estilo de las tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Si no hay datos */
+        .no-data {
+            text-align: center;
+            font-size: 1.2em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de total de deudas por analista</h1>
+
+        <!-- Tabla de datos -->
+        {% if facts %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Analista</th>
+                        <th>Deuda a recuperar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fact in facts %}
+                        <tr>
+                            <td>{{ fact.ind_analista }}</td>
+                            <td>{{ fact.suma_monto_deuda_analista|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No hay registros disponibles.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Deudas Complejo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #DA291C;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        th {
+            background-color: #DA291C;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f7f7f7;
+            cursor: pointer;
+        }
+        .no-data {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+        }
+        .btn-print {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #DA291C;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn-print:hover {
+            background-color: #bf2519;
+        }
+        .btn-back {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #DA291C;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-back:hover {
+            background-color: #bf2519;
+        }
+        /* Estilo para el formulario de filtros */
+        .filter-form {
+            margin-bottom: 20px;
+        }
+        .filter-form input {
+            padding: 5px;
+            font-size: 14px;
+        }
+        .filter-form label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Deudas Administrativas</h1>
+
+        <!-- Formulario de filtros -->
+        <form class="filter-form" method="get" action="{% url 'reporte_deudas2' %}">
+            <div>
+                <label for="ind_analista">Analista:</label>
+                <input type="text" id="ind_analista" name="ind_analista" value="{{ request.GET.ind_analista }}">
+            </div>
+            <div>
+                <label for="trim_cln">Trimestre:</label>
+                <input type="text" id="trim_cln" name="trim_cln" value="{{ request.GET.trim_cln }}">
+            </div>
+            <div>
+                <label for="year_cln">Año:</label>
+                <input type="text" id="year_cln" name="year_cln" value="{{ request.GET.year_cln }}">
+            </div>
+            <div>
+                <button type="submit">Aplicar Filtros</button>
+            </div>
+        </form>
+
+        <!-- Tabla de resultados -->
+        {% if facts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Analista</th>
+                    <th>Trimestre</th>
+                    <th>Año</th>
+                    <th>Cantidad Cobr Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fact in facts %}
+                <tr>
+                    <td>{{ fact.0 }}</td>
+                    <td>{{ fact.1 }}</td>
+                    <td>{{ fact.2 }}</td>
+                    <td>{{ fact.3 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">No se encontraron resultados con los filtros aplicados.</p>
+        {% endif %}
+
+        <div>
+            <button class="btn-print" onclick="window.print()">Imprimir</button>
+        </div>
+
+        <div>
+            <a href="{% url 'reporte_deudas2' %}" class="btn-back">Volver</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% if clientes %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ind Cliente</th>
+                <th>Nombre Cliente</th>
+                <th>Estado Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.ind_cliente }}</td>
+                    <td>{{ cliente.nam_cliente }}</td>
+                    <td>{{ cliente.sta_cliente }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay clientes disponibles.</p>
+{% endif %}

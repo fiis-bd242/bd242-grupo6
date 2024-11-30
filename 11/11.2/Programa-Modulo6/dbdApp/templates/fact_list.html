@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Reportes de Deudas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .no-data {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de Reportes de Deudas</h1>
+
+        {% if facts %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ind Analista</th>
+                        <th>Reg Analista</th>
+                        <th>Ind Date</th>
+                        <th>Ind Cliente</th>
+                        <th>Suma Monto Deuda Analista</th>
+                        <th>Suma Monto Deuda Región</th>
+                        <th>Cant. Clientes Atrasado Analista</th>
+                        <th>Cant. Clientes al Día Analista</th>
+                        <th>Cant. Clientes Cobranza Admin Trimestre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fact in facts %}
+                        <tr>
+                            <td>{{ fact.id }}</td>
+                            <td>{{ fact.ind_analista }}</td>
+                            <td>{{ fact.reg_analista }}</td>
+                            <td>{{ fact.ind_date }}</td>
+                            <td>{{ fact.ind_cliente }}</td>
+                            <td>{{ fact.suma_monto_deuda_analista|floatformat:2 }}</td>
+                            <td>{{ fact.suma_monto_deuda_region|floatformat:2 }}</td>
+                            <td>{{ fact.cantidad_clientes_atrasado_analista }}</td>
+                            <td>{{ fact.cantidad_clientes_al_dia_analista }}</td>
+                            <td>{{ fact.cantidad_clientes_cobranza_admin_trimestre }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No hay registros disponibles.</p>
+        {% endif %} <!-- Asegúrate de que este endif esté aquí -->
+    </div>
+</body>
+</html>
