@@ -150,12 +150,10 @@ INSERT INTO Solicitud (COD_SOLICITUD, FECHA_INICIO_SOLICITUD, FECHA_FIN_SOLICITU
 ('SOL003', '2024-03-01', '2024-03-15', 'CANCELADA', 'DAC', 'S003');
 
 -- Poblamiento inicial para la tabla Documento_adm
-INSERT INTO Documento_adm (COD_DOCUMENTO, NOMBRE_DOC, TIPO_DOC, RUTA_DOC, FECHA_RECIBIDO, VERSION, ID_SOLICITUD, COD_ANALISTA_CREDITO) VALUES
-('DOC001', 'Solicitud de Crédito', 'PDF', '/docs/solicitud_credito.pdf', '2024-01-02', 1, 'SOL001', 'AC0001'), 
-('DOC002', 'Contrato', 'PDF', '/docs/contrato.pdf', '2024-02-03', 1, 'SOL002', 'AC0002'), 
-('DOC003', 'Informe de Evaluación', 'DOCX', '/docs/informe_evaluacion.docx', '2024-03-05', 1, 'SOL003', 'AC0003'), 
-('DOC004', 'Carta de Aprobación', 'PDF', '/docs/carta_aprobacion.pdf', '2024-04-10', 1, 'SOL004', 'AC0004'), 
-('DOC005', 'Reporte de Riesgo', 'PDF', '/docs/reporte_riesgo.pdf', '2024-05-12', 1, 'SOL005', 'AC0005'); 
+INSERT INTO Documento_adm (COD_DOCUMENTO, NOMBRE_DOC, TIPO_DOC, RUTA_DOC, FECHA_RECIBIDO, VERSION, COD_SOLICITUD, COD_ANALISTA_CREDITO) VALUES
+('DOC001', 'Solicitud de Crédito', 'PDF', '/docs/solicitud_credito.pdf', '2024-01-02', 1, 'SOL001', 'ANAL001'),
+('DOC002', 'Contrato', 'PDF', '/docs/contrato.pdf', '2024-02-03', 1, 'SOL002', 'ANAL002'),
+('DOC003', 'Informe de Evaluación', 'DOCX', '/docs/informe_evaluacion.docx', '2024-03-05', 1, 'SOL003', 'ANAL003');
 
 -- Poblamiento inicial para la tabla Entrevista
 INSERT INTO Entrevista (COD_ENTREVISTA, FECHA_ENTREVISTA, HORA_INICIO_ENTREVISTA, HORA_FIN_ENTREVISTA, RESULTADOS_ENTREVISTA, OBSERVACIONES_ENTREVISTA, COD_SOLICITUD) VALUES
@@ -164,16 +162,17 @@ INSERT INTO Entrevista (COD_ENTREVISTA, FECHA_ENTREVISTA, HORA_INICIO_ENTREVISTA
 ('ENT003', '2024-03-06', '09:00:00', '09:30:00', 'Pendiente', 'Se requiere más información.', 'SOL003');
 
 -- Poblamiento inicial para la tabla Analista_admision
-INSERT INTO Analista_admision (COD_ANALISTA_ADM, NOMBRE_AD, CORREO_ELECTRONICO_AD, TELEFONO_AD, DIRECCION, NUM_ACEPTADOS, NUM_RECHAZADOS, NUM_PENDIENTES, COD_SOL_ANALISTA_ADM) VALUES
-('ANAL001', 'Carlos Ruiz', 'carlos.ruiz@example.com', '987654310', 'Calle Cuarta 123', 1, 0, 0, 'SOL_ANAL001'),
-('ANAL002', 'María López', 'maria.lopez@example.com', '987654311', 'Calle Quinta 456', 0, 1, 0, 'SOL_ANAL002'),
-('ANAL003', 'Pedro Fernández', 'pedro.fernandez@example.com', '987654312', 'Calle Sexta 789', 0, 0, 1, 'SOL_ANAL003');
+INSERT INTO Analista_admision (COD_ANALISTA_ADM, NOMBRE_AD, CORREO_ELECTRONICO_AD, TELEFONO_AD, DIRECCION, NUM_ACEPTADOS, NUM_RECHAZADOS, NUM_PENDIENTES) VALUES
+('ANAL001', 'Carlos Ruiz', 'carlos.ruiz@example.com', '987654310', 'Calle Cuarta 123', 1, 0, 0),
+('ANAL002', 'María López', 'maria.lopez@example.com', '987654311', 'Calle Quinta 456', 0, 1, 0),
+('ANAL003', 'Pedro Fernández', 'pedro.fernandez@example.com', '987654312', 'Calle Sexta 789', 0, 0, 1);
 
 -- Poblamiento inicial para la tabla Solicitud_Analista_admision
 INSERT INTO Solicitud_Analista_admision (COD_SOL_ANALISTA_ADM, FECHA_INICIO, FECHA_FINAL, COD_ANALISTA_ADM, COD_SOLICITUD) VALUES
 ('SOL_ANAL001', '2024-01-01', '2024-01-10', 'ANAL001', 'SOL001'),
 ('SOL_ANAL002', '2024-02-01', '2024-02-15', 'ANAL002', 'SOL002'),
 ('SOL_ANAL003', '2024-03-01', '2024-03-20', 'ANAL003', 'SOL003');
+
 
 --INSERT CREDITO EN FINANCIAMIENTO
 
