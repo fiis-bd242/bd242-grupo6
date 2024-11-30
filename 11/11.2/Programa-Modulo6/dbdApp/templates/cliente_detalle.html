@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Cliente</title>
+</head>
+<body>
+    <h1>Detalles del Cliente</h1>
+
+    {% if cliente %}
+        <p><strong>Ind Cliente:</strong> {{ cliente.ind_cliente }}</p>
+        <p><strong>Nombre Cliente:</strong> {{ cliente.nombre_cliente }}</p>
+        <p><strong>Estado Cliente:</strong> {{ cliente.estado_cliente }}</p>
+    {% else %}
+        <p>No hay información de cliente disponible.</p>
+    {% endif %}
+</body>
+</html>
