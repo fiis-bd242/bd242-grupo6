@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Seguimiento{% endblock %}
+
+{% block content %}
+    <h1>Registrar Seguimiento - {{ solicitud.cod_solicitud }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Registrar Seguimiento</button>
+    </form>
+{% endblock %}

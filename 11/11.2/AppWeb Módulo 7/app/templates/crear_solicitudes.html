@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Crear Solicitud</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Muestra el formulario de Solicitud -->
+            <div class="form-group">
+                <label for="{{ solicitud_form.fecha_inicio_solicitud.id_for_label }}">
+                    {{ solicitud_form.fecha_inicio_solicitud.label }}
+                </label>
+                {{ solicitud_form.fecha_inicio_solicitud }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ solicitud_form.tipo_solicitud.id_for_label }}">
+                    {{ solicitud_form.tipo_solicitud.label }}
+                </label>
+                {{ solicitud_form.tipo_solicitud }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+        </form>
+    </div>
+{% endblock %}

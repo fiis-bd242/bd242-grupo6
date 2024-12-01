@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalles de Solicitud{% endblock %}
+
+{% block content %}
+    <h1>Detalles de la Solicitud</h1>
+    <p><strong>Código:</strong> {{ solicitud.cod_solicitud }}</p>
+    <p><strong>Estado:</strong> {{ solicitud.estado_solicitud }}</p>
+    <p><strong>Fecha de Creación:</strong> {{ solicitud.fecha_inicio_solicitud }}</p>
+
+    <h2>Documentos</h2>
+    <ul>
+        {% for documento in documentos %}
+            <li>
+                <strong>Nombre:</strong> {{ documento.nombre_doc }} <br>
+                <strong>Tipo:</strong> {{ documento.tipo_doc }} <br>
+                <strong>Estado:</strong> {{ documento.estado_validacion }} <br>
+                <strong>Fecha de Recepción:</strong> {{ documento.fecha_recibido }} <br>
+                <strong>Versión:</strong> {{ documento.version }} <br>
+                <!-- Mostrar enlace si archivo está disponible -->
+                {% if documento.ruta_doc %}
+                    <a href="{{ documento.ruta_doc }}" target="_blank">Ver Documento</a>
+                {% else %}
+                    <span>No hay archivo adjunto.</span>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No hay documentos.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Entrevistas</h2>
+    <ul>
+        {% for entrevista in entrevistas %}
+            <li>
+                <strong>Fecha:</strong> {{ entrevista.fecha_entrevista }} <br>
+                <strong>Hora de Inicio:</strong> {{ entrevista.hora_inicio_entrevista }} <br>
+                <strong>Hora de Fin:</strong> {{ entrevista.hora_fin_entrevista }} <br>
+                <strong>Resultado:</strong> {{ entrevista.resultados_entrevista }} <br>
+                <strong>Observaciones:</strong> {{ entrevista.observaciones_entrevista|default:"Sin observaciones" }}
+            </li>
+        {% empty %}
+            <li>No hay entrevistas registradas.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Capacitaciones</h2>
+    <ul>
+        {% for capacitacion in capacitaciones %}
+            <li>
+                <strong>Código:</strong> {{ capacitacion.cod_capacitacion }} <br>
+                <strong>Fecha:</strong> {{ capacitacion.fecha_capacitacion }} <br>
+                <strong>Temas tratados:</strong> {{ capacitacion.temas_tratados }} <br>
+                <strong>Asistencia:</strong> {{ capacitacion.asistencia }} <br>
+            </li>
+        {% empty %}
+            <li>No hay capacitaciones registradas.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Seguimientos</h2>
+    <ul>
+        {% for seguimiento in seguimientos %}
+            <li>
+                <strong>Código:</strong> {{ seguimiento.cod_seguimiento }} <br>
+                <strong>Fecha:</strong> {{ seguimiento.fecha_seguimiento }} <br>
+                <strong>Indicadores:</strong> 
+                {% if seguimiento.indicadores %}
+                    {{ seguimiento.indicadores|json_script:"indicadores" }}
+                {% else %}
+                    No hay indicadores registrados.
+                {% endif %}
+                <br>
+                <strong>Observaciones:</strong> {{ seguimiento.observaciones|default:"Sin observaciones" }}
+            </li>
+        {% empty %}
+            <li>No hay seguimientos registrados.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

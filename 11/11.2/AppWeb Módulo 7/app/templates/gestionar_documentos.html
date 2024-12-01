@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Documentos{% endblock %}
+
+{% block content %}
+    <h1>Gestionar Documentos - {{ solicitud.cod_solicitud }}</h1>
+    
+    <!-- Formulario para subir un documento -->
+    <h2>Subir Nuevo Documento</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Subir Documento</button>
+    </form>
+
+    <h2>Documentos Subidos</h2>
+    <ul>
+        {% for documento in documentos %}
+            <li>
+                <strong>Codigo:</strong> {{ documento.cod_documento }} <br>
+                <strong>Nombre:</strong> {{ documento.nombre_doc }} <br>
+                <strong>Tipo:</strong> {{ documento.tipo_doc }} <br>
+                <strong>Fecha de Recepción:</strong> {{ documento.fecha_recibido }} <br>
+                <strong>Estado:</strong> 
+                <span class="badge 
+                    {% if documento.estado_validacion == 'VALIDADO' %}badge-success{% elif documento.estado_validacion == 'RECHAZADO' %}badge-danger{% else %}badge-warning{% endif %}">
+                    {{ documento.estado_validacion }}
+                </span> <br>
+                <a href="{{ documento.ruta_doc }}" target="_blank">Ver Documento</a> <br>
+                
+                <!-- Formulario para cambiar el estado del documento -->
+                <form method="POST" action="{% url 'cambiar_estado_documento' documento.cod_documento %}" style="display:inline;">
+                    {% csrf_token %}
+                    <label for="estado">Cambiar Estado:</label>
+                    <select name="estado" id="estado">
+                        <option value="PENDIENTE" {% if documento.estado_validacion == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+                        <option value="VALIDADO" {% if documento.estado_validacion == 'VALIDADO' %}selected{% endif %}>Validado</option>
+                        <option value="RECHAZADO" {% if documento.estado_validacion == 'RECHAZADO' %}selected{% endif %}>Rechazado</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-info">Actualizar Estado</button>
+                </form>
+
+                <!-- Eliminar Documento -->
+                <form method="POST" action="{% url 'eliminar_documento' documento.cod_documento %}" style="display:inline;" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No hay documentos subidos.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

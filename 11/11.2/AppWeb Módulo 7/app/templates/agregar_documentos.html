@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Agregar Documentos a la Solicitud: {{ solicitud.cod_solicitud }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del Documento</th>
+                    <th>Tipo de Documento</th>
+                    <th>Ruta del Documento</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                    <tr>
+                        <td>{{ form.nombre_doc }}</td>
+                        <td>{{ form.tipo_doc }}</td>
+                        <td>{{ form.ruta_doc }}</td>
+                        <td>{{ form.DELETE }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <button type="submit">Guardar Documentos</button>
+    </form>
+
+    <a href="{% url 'solicitudes_list' %}">Volver a la lista de solicitudes</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Entrevistas{% endblock %}
+
+{% block content %}
+    <h1>Entrevistas - {{ solicitud.cod_solicitud }}</h1>
+
+    <!-- Formulario para agregar una nueva entrevista -->
+    <h2>Registrar Nueva Entrevista</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Registrar Entrevista</button>
+    </form>
+
+    <h2>Entrevistas Registradas</h2>
+    <ul>
+        {% for entrevista in entrevistas %}
+            <li>
+                <strong>Fecha:</strong> {{ entrevista.fecha_entrevista }} <br>
+                <strong>Hora de Inicio:</strong> {{ entrevista.hora_inicio_entrevista }} <br>
+                <strong>Hora de Fin:</strong> {{ entrevista.hora_fin_entrevista }} <br>
+                <strong>Resultado:</strong> {{ entrevista.resultados_entrevista }} <br>
+                {% if entrevista.observaciones_entrevista %}
+                    <strong>Observaciones:</strong> {{ entrevista.observaciones_entrevista }} <br>
+                {% else %}
+                    <strong>Observaciones:</strong> No hay observaciones. <br>
+                {% endif %}
+
+                <!-- Formulario para editar la entrevista (opcional) -->
+                <a href="{% url 'editar_entrevista' entrevista.cod_entrevista %}" class="btn btn-warning btn-sm">Editar</a>
+
+                <!-- Eliminar Entrevista -->
+                <form method="POST" action="{% url 'eliminar_entrevista' entrevista.cod_entrevista %}" style="display:inline;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta entrevista?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No hay entrevistas registradas.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

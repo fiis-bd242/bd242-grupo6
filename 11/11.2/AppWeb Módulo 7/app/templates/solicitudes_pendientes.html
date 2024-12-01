@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitudes Pendientes{% endblock %}
+
+{% block content %}
+    <h1>Solicitudes</h1>
+    
+    <!-- Formulario de filtrado -->
+    <form method="get" action="{% url 'solicitudes_pendientes' %}">
+        <label for="cod_solicitante">Código Solicitante:</label>
+        <input type="text" name="cod_solicitante" id="cod_solicitante" value="{{ request.GET.cod_solicitante }}">
+        
+        <label for="nombre_solicitante">Nombre Solicitante:</label>
+        <input type="text" name="nombre_solicitante" id="nombre_solicitante" value="{{ request.GET.nombre_solicitante }}">
+    
+        <label for="ruc_solicitante">RUC:</label>
+        <input type="text" name="ruc_solicitante" id="ruc_solicitante" value="{{ request.GET.ruc_solicitante }}">
+    
+        <label for="dni_solicitante">DNI:</label>
+        <input type="text" name="dni_solicitante" id="dni_solicitante" value="{{ request.GET.dni_solicitante }}">
+    
+        <label for="correo_solicitante">Correo Electrónico:</label>
+        <input type="email" name="correo_solicitante" id="correo_solicitante" value="{{ request.GET.correo_solicitante }}">
+    
+        <label for="telefono_solicitante">Teléfono:</label>
+        <input type="text" name="telefono_solicitante" id="telefono_solicitante" value="{{ request.GET.telefono_solicitante }}">
+        
+        <label for="estado_solicitud">Estado de Solicitud:</label>
+        <select name="estado_solicitud" id="estado_solicitud">
+            <option value="">-- Seleccionar --</option>
+            <option value="PENDIENTE" {% if request.GET.estado_solicitud == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+            <option value="COMPLETADA" {% if request.GET.estado_solicitud == 'COMPLETADA' %}selected{% endif %}>Completada</option>
+            <option value="CANCELADA" {% if request.GET.estado_solicitud == 'CANCELADA' %}selected{% endif %}>Cancelada</option>
+        </select>
+        
+        <label for="tipo_solicitud">Tipo de Solicitud:</label>
+        <input type="text" name="tipo_solicitud" id="tipo_solicitud" value="{{ request.GET.tipo_solicitud }}">
+        
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+        
+        <label for="fecha_fin">Fecha de Fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ request.GET.fecha_fin }}">
+        
+        <button type="submit">Filtrar</button>
+    </form>
+    
+
+    <!-- Mostrar las solicitudes filtradas -->
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Solicitante</th>
+                <th>Estado</th>
+                <th>Tipo</th>
+                <th>Fechas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitud in solicitudes %}
+                <tr>
+                    <td>{{ solicitud.cod_solicitud }}</td>
+                    <td>{{ solicitud.cod_solicitante }}</td>
+                    <td>{{ solicitud.estado_solicitud }}</td>
+                    <td>{{ solicitud.tipo_solicitud }}</td>
+                    <td>{{ solicitud.fecha_inicio_solicitud }} - {{ solicitud.fecha_fin_solicitud }}</td>
+                    <td><a href="{% url 'gestionar_solicitud' solicitud.cod_solicitud %}" class="btn btn-link">Gestionar</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

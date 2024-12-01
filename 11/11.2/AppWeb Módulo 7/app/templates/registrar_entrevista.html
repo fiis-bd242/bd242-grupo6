@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Entrevista{% endblock %}
+
+{% block content %}
+    <h1>Registrar Entrevista - {{ solicitud.cod_solicitud }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Registrar Entrevista</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Solicitudes{% endblock %}
+
+{% block content %}
+<h1>Mis Solicitudes</h1>
+
+{% for solicitud, formset in solicitudes_with_formsets %}
+    <h2>Solicitud: {{ solicitud.cod_solicitud }}</h2>
+    <p>Tipo: {{ solicitud.tipo_solicitud }}</p>
+    <p>Fecha de Inicio: {{ solicitud.fecha_inicio_solicitud }}</p>
+    <p>Estado: {{ solicitud.estado_solicitud }}</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Renderizar el FormSet correspondiente -->
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+        <h3>{% if forloop.last %}
+            Subir Documento
+        {% else %}
+            Documento {{ forloop.counter }} - {{ form.solicitud_pointer.value|default:"Nuevo Documento" }}
+        {% endif %}</h3>
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary">Subir Documentos</button>
+    </form>
+{% endfor %}
+
+{% endblock %}

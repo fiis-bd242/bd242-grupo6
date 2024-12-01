@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Seguimientos{% endblock %}
+
+{% block content %}
+    <h1>Seguimientos - {{ solicitud.cod_solicitud }}</h1>
+
+    <!-- Formulario para agregar un nuevo seguimiento -->
+    <h2>Registrar Nuevo Seguimiento</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Registrar Seguimiento</button>
+    </form>
+
+    <h2>Seguimientos Registrados</h2>
+    <ul>
+        {% for seguimiento in seguimientos %}
+            <li>
+                <strong>Fecha:</strong> {{ seguimiento.fecha_seguimiento }} <br>
+                <strong>Indicadores:</strong> 
+                {% for key, value in seguimiento.indicadores.items %}
+                    <strong>{{ key }}:</strong> {{ value }} <br>
+                {% endfor %}
+                <strong>Observaciones:</strong> 
+                {% if seguimiento.observaciones %}
+                    {{ seguimiento.observaciones }}
+                {% else %}
+                    No hay observaciones.
+                {% endif %}
+                
+                <!-- Botón de edición -->
+                <a href="{% url 'editar_seguimiento' seguimiento.cod_seguimiento %}" class="btn btn-warning btn-sm">Editar</a>
+                
+                <!-- Formulario para eliminar seguimiento -->
+                <form method="POST" action="{% url 'eliminar_seguimiento' seguimiento.cod_seguimiento %}" style="display:inline;" onclick="return confirm('¿Estás seguro de que deseas eliminar este seguimiento?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No hay seguimientos registrados.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
