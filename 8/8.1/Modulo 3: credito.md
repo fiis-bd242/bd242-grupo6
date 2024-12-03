@@ -8,7 +8,7 @@
 | Imagen interfaz       |A-101|
 <div align="center">
 <a>
-    <img src="[https://github.com/fiis-bd242/bd242-grupo6/blob/main/8/8.1/Folder%208.1%20Modulo1/A-101.png](https://github.com/fiis-bd242/bd242-grupo6/blob/main/8/8.1/PantallasModulo4/Seleccion%20de%20procesos%20-%20creditos%20en%20financiamiento.jpeg)?raw=true" alt="Prototipo" width="750" style=" padding-right: 120px;">
+    <img src="[https://github.com/fiis-bd242/bd242-grupo6/blob/main/8/8.1/Folder%208.1%20Modulo1/A-101.png](https://github.com/fiis-bd242/bd242-grupo6/blob/main/8/8.1/PantallasModulo4/Seleccion%20de%20procesos%20-%20creditos%20en%20financiamiento.jpeg?raw=true" alt="Prototipo" width="750" style=" padding-right: 120px;">
 </a>
 </div>
 
