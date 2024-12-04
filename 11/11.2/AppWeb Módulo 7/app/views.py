@@ -13,6 +13,65 @@ from django.forms import modelformset_factory
 from .models import Solicitud, Documento
 from .forms import DocumentoForm
 from django import forms
+from mongoengine import connect
+
+connect('AppWebBaseMongo', host='mongodb://localhost:27017')
+
+from couchbase.cluster import Cluster, ClusterOptions
+from couchbase.auth import PasswordAuthenticator
+from couchbase.bucket import Bucket
+import base64 
+
+# Configuración del cliente Couchbase
+cluster = Cluster('couchbase://localhost', ClusterOptions(PasswordAuthenticator('Administrator', 'admin123')))
+bucket = cluster.bucket('ArchivosCouch')  # Asegúrate de usar el nombre de tu bucket
+collection = bucket.default_collection()
+
+def save_file_to_couchbase(cod_documento, archivo):
+    data = archivo.read()
+    collection.upsert(cod_documento, {"archivo": data, "content_type": archivo.content_type})
+    
+from django.http import HttpResponse
+from couchbase.exceptions import DocumentNotFoundException
+
+
+# Mapeo de tipos MIME a extensiones de archivo
+MIME_TO_EXT = {
+    "application/msword": ".doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+    "application/pdf": ".pdf",
+    "application/vnd.ms-powerpoint": ".ppt",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
+}
+
+def serve_couchbase_file(request, cod_documento):
+    try:
+        # Recupera el documento desde Couchbase
+        result = collection.get(cod_documento).content_as[dict]
+        archivo_base64 = result.get("archivo")
+        
+        # Decodifica el archivo de Base64 a binario
+        archivo_binario = base64.b64decode(archivo_base64)
+        
+        # Obtén el tipo de contenido del archivo
+        content_type = result.get("content_type", "application/octet-stream")
+        
+        # Determina la extensión de archivo basada en el tipo MIME
+        file_extension = MIME_TO_EXT.get(content_type, ".bin")  # Asigna .bin si no se encuentra el tipo MIME
+        
+        # Devuelve el archivo como respuesta con el tipo de contenido adecuado
+        response = HttpResponse(archivo_binario, content_type=content_type)
+        response['Content-Disposition'] = f'attachment; filename="{cod_documento}{file_extension}"'  # Usa la extensión dinámica
+        
+        # Retorna la respuesta para la descarga
+        return response
+    except DocumentNotFoundException:
+        return HttpResponse("Archivo no encontrado", status=404)
+
+
+
 
 # Función para verificar si el usuario es analista
 def is_analista(user):
@@ -137,14 +196,40 @@ def solicitudes_list(request):
                         nombre_doc=form.cleaned_data['nombre_doc'],
                         tipo_doc=form.cleaned_data['tipo_doc'],
                     )
+                    # Guardar el archivo en Couchbase si existe
+                    archivo = form.cleaned_data.get('archivo')  # Obtenemos el archivo del formulario
+
+                    if archivo:
+                        cod_documento = form.cleaned_data['cod_documento_pointer']
+                        try:
+                            # Intentamos recuperar el documento de Couchbase
+                            existing_document = collection.get(cod_documento).content_as[dict]
+                            archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                            # Si existe, actualizamos el archivo
+                            updated_document = {
+                                "archivo": archivo_base64,
+                                "content_type": archivo.content_type,  # Tipo de archivo
+                                "fecha_subida": timezone.now().isoformat()  # Actualizamos la fecha
+                            }
+                            collection.upsert(cod_documento, updated_document)
+                        except DocumentNotFoundException:
+                            archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                                # Si no existe, creamos un nuevo documento
+                            new_document = {
+                                "archivo": archivo_base64,
+                                "content_type": archivo.content_type,
+                                "fecha_subida": timezone.now().isoformat()
+                            }
+                            collection.insert(cod_documento, new_document)
                 else:
                     existing_document = Documento.objects.filter(solicitud_id=cod_solicitud, nombre_doc=form.cleaned_data['nombre_doc'],tipo_doc=form.cleaned_data['tipo_doc']).first()
-                
+                    archivo = form.cleaned_data.get('archivo')  # Obtenemos el archivo del formulario
                     if not (form.cleaned_data.get('DELETE', False)):
                         if existing_document:
-                        # Si el documento ya existe, incrementamos la versión
+                            # Si un documento con mismo nombre y tipo ya existe, creamos uno con versión incrementada
+                            cod_documento_temp='DOC' + str(Documento.objects.count() + 5).zfill(6)
                             documento = Documento.objects.create(
-                            cod_documento='DOC' + str(Documento.objects.count() + 5).zfill(6),
+                            cod_documento=cod_documento_temp,
                             fecha_recibido = timezone.now(),
                             nombre_doc=form.cleaned_data['nombre_doc'],
                             tipo_doc=form.cleaned_data['tipo_doc'],
@@ -152,10 +237,18 @@ def solicitudes_list(request):
                             version = (Documento.objects.filter(solicitud_id=cod_solicitud, nombre_doc=form.cleaned_data['nombre_doc'],tipo_doc=form.cleaned_data['tipo_doc']).count() + 1),
                             solicitud= Solicitud.objects.get(cod_solicitud=form.cleaned_data['solicitud_pointer'])  # Asociar al solicitante del usuario
                             )
+                            # Guardar un nuevo archivo en Couchbase
+                            archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                            collection.upsert(cod_documento_temp, {
+                                "archivo": archivo_base64,  # Guarda el archivo como binario
+                                "content_type": archivo.content_type,  # Tipo MIME del archivo
+                                "fecha_subida": timezone.now().isoformat()  # Fecha de subida en formato ISO
+                                })
                         else:
                         # Si no existe, la versión es 1
+                            cod_documento_temp='DOC' + str(Documento.objects.count() + 5).zfill(6)
                             documento = Documento.objects.create(
-                            cod_documento='DOC' + str(Documento.objects.count() + 5).zfill(6),
+                            cod_documento=cod_documento_temp,
                             fecha_recibido = timezone.now(),
                             nombre_doc=form.cleaned_data['nombre_doc'],
                             tipo_doc=form.cleaned_data['tipo_doc'],
@@ -163,13 +256,23 @@ def solicitudes_list(request):
                             solicitud= Solicitud.objects.get(cod_solicitud=form.cleaned_data['solicitud_pointer']),  # Asociar al solicitante del usuario
                             version = 1
                             )
+                            archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                            collection.upsert(cod_documento_temp, {
+                                "archivo": archivo_base64,  # Guarda el archivo como binario
+                                "content_type": archivo.content_type,  # Tipo MIME del archivo
+                                "fecha_subida": timezone.now().isoformat()  # Fecha de subida en formato ISO
+                                })
 
                     else:
                         cod_doc = form.cleaned_data['cod_documento_pointer']
                         # Ahora puedes realizar la acción de eliminar el documento
                         try:
-                           documento = Documento.objects.get(cod_documento=cod_doc)
-                           documento.delete()
+                            documento = Documento.objects.get(cod_documento=cod_doc)
+                            documento.delete()
+                            # Intentar obtener el documento en Couchbase
+                            archivo_couchbase = collection.get(cod_doc)
+                            # Si existe, eliminar el documento
+                            collection.remove(cod_doc)
                         except Documento.DoesNotExist:
                             # Si no se encuentra el documento, podemos manejar el error
                             pass
@@ -178,21 +281,45 @@ def solicitudes_list(request):
         else:
             for form in formset:
                 if form.is_valid():
-                    print("FORMULARIO VALIDO")
                     cod_solicitud= form.cleaned_data['solicitud_pointer']
                     if Documento.objects.filter(cod_documento=form.cleaned_data['cod_documento_pointer']).first() and (not (form.cleaned_data.get('DELETE', False))):
                         documento=  Documento.objects.filter(cod_documento=form.cleaned_data['cod_documento_pointer']).update(
                             nombre_doc=form.cleaned_data['nombre_doc'],
                             tipo_doc=form.cleaned_data['tipo_doc'],
                         )
+                        # Guardar el archivo en MongoDB si existe
+                        archivo = form.cleaned_data.get('archivo')  # Obtenemos el archivo del formulario
+                        if archivo:
+                            cod_documento = form.cleaned_data['cod_documento_pointer']
+                            try:
+                                # Intentamos recuperar el documento de Couchbase
+                                existing_document = collection.get(cod_documento).content_as[dict]
+                                archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                                # Si existe, actualizamos el archivo
+                                updated_document = {
+                                    "archivo": archivo_base64,
+                                    "content_type": archivo.content_type,  # Tipo de archivo
+                                    "fecha_subida": timezone.now().isoformat()  # Actualizamos la fecha
+                                }
+                                collection.upsert(cod_documento, updated_document)
+                            except DocumentNotFoundException:
+                                # Si no existe, creamos un nuevo documento
+                                archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                                new_document = {
+                                    "archivo": archivo_base64,
+                                    "content_type": archivo.content_type,
+                                    "fecha_subida": timezone.now().isoformat()
+                                }
+                                collection.insert(cod_documento, new_document)
                     else:
                         existing_document = Documento.objects.filter(solicitud_id=cod_solicitud, nombre_doc=form.cleaned_data['nombre_doc'],tipo_doc=form.cleaned_data['tipo_doc']).first()
 
                         if not (form.cleaned_data.get('DELETE', False)):
                             if existing_document:
                             # Si el documento ya existe, incrementamos la versión
+                                cod_documento_temp='DOC' + str(Documento.objects.count() + 5).zfill(6)
                                 documento = Documento.objects.create(
-                                cod_documento='DOC' + str(Documento.objects.count() + 5).zfill(6),
+                                cod_documento=cod_documento_temp,
                                 fecha_recibido = timezone.now(),
                                 nombre_doc=form.cleaned_data['nombre_doc'],
                                 tipo_doc=form.cleaned_data['tipo_doc'],
@@ -200,10 +327,18 @@ def solicitudes_list(request):
                                 version = (Documento.objects.filter(solicitud_id=cod_solicitud, nombre_doc=form.cleaned_data['nombre_doc'],tipo_doc=form.cleaned_data['tipo_doc']).count() + 1),
                                 solicitud= Solicitud.objects.get(cod_solicitud=form.cleaned_data['solicitud_pointer'])  # Asociar al solicitante del usuario
                                 )
+                                archivo = form.cleaned_data.get('archivo')
+                                archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                                collection.upsert(cod_documento_temp, {
+                                    "archivo": archivo_base64,  # Guarda el archivo como binario
+                                    "content_type": archivo.content_type,  # Tipo MIME del archivo
+                                    "fecha_subida": timezone.now().isoformat()  # Fecha de subida en formato ISO
+                                })
                             else:
                             # Si no existe, la versión es 1
+                                cod_documento_temp='DOC' + str(Documento.objects.count() + 5).zfill(6)
                                 documento = Documento.objects.create(
-                                cod_documento='DOC' + str(Documento.objects.count() + 5).zfill(6),
+                                cod_documento=cod_documento_temp,
                                 fecha_recibido = timezone.now(),
                                 nombre_doc=form.cleaned_data['nombre_doc'],
                                 tipo_doc=form.cleaned_data['tipo_doc'],
@@ -211,13 +346,24 @@ def solicitudes_list(request):
                                 solicitud= Solicitud.objects.get(cod_solicitud=form.cleaned_data['solicitud_pointer']),  # Asociar al solicitante del usuario
                                 version = 1
                                 )
+                                archivo = form.cleaned_data.get('archivo')
+                                archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                                collection.upsert(cod_documento_temp, {
+                                    "archivo": archivo_base64,  # Guarda el archivo como binario
+                                    "content_type": archivo.content_type,  # Tipo MIME del archivo
+                                    "fecha_subida": timezone.now().isoformat()  # Fecha de subida en formato ISO
+                                })
 
                         else:
                             cod_doc = form.cleaned_data['cod_documento_pointer']
                             # Ahora puedes realizar la acción de eliminar el documento
                             try:
-                               documento = Documento.objects.get(cod_documento=cod_doc)
-                               documento.delete()
+                                documento = Documento.objects.get(cod_documento=cod_doc)
+                                documento.delete()
+                                # Intentar obtener el documento en Couchbase
+                                archivo_couchbase = collection.get(cod_doc)
+                                # Si existe, eliminar el documento
+                                collection.remove(cod_doc)
                             except Documento.DoesNotExist:
                                 # Si no se encuentra el documento, podemos manejar el error
                                 pass
@@ -240,6 +386,7 @@ def solicitudes_list(request):
                     # Si 'cod_documento' está en initial, hacer algo si existe
                     form.initial['cod_documento_pointer'] = form.initial['cod_documento']
                     form.initial['cod_documento'] ="xdd"
+                    
                 else:
                     # Si no existe en initial, hacer algo distinto
                     
@@ -295,6 +442,31 @@ def agregar_documentos(request, id):
                 if not document.solicitud:
                     document.solicitud = solicitud  # Asignamos la solicitud al documento
                 document.save()
+                archivo = form.cleaned_data.get('archivo')  # Obtenemos el archivo del formulario
+
+                if archivo:
+                    cod_documento = form.cleaned_data['cod_documento_pointer']
+                    try:
+                        # Intentamos recuperar el documento de Couchbase
+                        existing_document = collection.get(cod_documento).content_as[dict]
+                        archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                        # Si existe, actualizamos el archivo
+                        updated_document = {
+                            "archivo": archivo_base64,
+                            "content_type": archivo.content_type,  # Tipo de archivo
+                            "fecha_subida": timezone.now().isoformat()  # Actualizamos la fecha
+                        }
+                        collection.upsert(cod_documento, updated_document)
+                    except DocumentNotFoundException:
+                        archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                            # Si no existe, creamos un nuevo documento
+                        new_document = {
+                            "archivo": archivo_base64,
+                            "content_type": archivo.content_type,
+                            "fecha_subida": timezone.now().isoformat()
+                        }
+                        collection.insert(cod_documento, new_document)
+
             return redirect('solicitudes_list')  # Redirigir después de guardar los documentos
 
     else:
@@ -404,6 +576,31 @@ def gestionar_documentos(request, cod_solicitud):
             documento.solicitud = solicitud
             documento.fecha_recibido= timezone.now()
             documento.save()
+            archivo = form.cleaned_data.get('archivo')  # Obtenemos el archivo del formulario
+
+            if archivo:
+                cod_documento = form.cleaned_data['cod_documento']
+                print("Codddd",cod_documento)
+                try:
+                    # Intentamos recuperar el documento de Couchbase
+                    existing_document = collection.get(cod_documento).content_as[dict]
+                    archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                    # Si existe, actualizamos el archivo
+                    updated_document = {
+                        "archivo": archivo_base64,
+                        "content_type": archivo.content_type,  # Tipo de archivo
+                        "fecha_subida": timezone.now().isoformat()  # Actualizamos la fecha
+                    }
+                    collection.upsert(cod_documento, updated_document)
+                except DocumentNotFoundException:
+                    archivo_base64 = base64.b64encode(archivo.read()).decode('utf-8')
+                    # Si no existe, creamos un nuevo documento
+                    new_document = {
+                        "archivo": archivo_base64,
+                        "content_type": archivo.content_type,
+                        "fecha_subida": timezone.now().isoformat()
+                    }
+                    collection.insert(cod_documento, new_document)
             return redirect('gestionar_documentos', cod_solicitud=cod_solicitud)
     else:
         form = DocumentoForm()
@@ -563,7 +760,6 @@ def cambiar_estado_documento(request, cod_documento):
         print(cod_documento)
         documento = get_object_or_404(Documento, cod_documento=cod_documento)
         nuevo_estado = request.POST.get('estado')
-        print("holaaa")
         if nuevo_estado in ['PENDIENTE', 'VALIDADO', 'RECHAZADO']:
             documento.estado_validacion = nuevo_estado
             documento.save()
@@ -574,6 +770,15 @@ def eliminar_documento(request, cod_documento):
     documento = get_object_or_404(Documento, cod_documento=cod_documento)
     solicitud_cod = documento.solicitud.cod_solicitud
     documento.delete()
+    try:
+        
+        # Intentar obtener el documento en Couchbase
+        archivo_couchbase = collection.get(cod_documento)
+        # Si existe, eliminar el documento
+        collection.remove(cod_documento)
+    except Documento.DoesNotExist:
+        # Si no se encuentra el documento, podemos manejar el error
+            pass
     return redirect('gestionar_documentos', cod_solicitud=solicitud_cod)
 
 # Vista para editar seguimiento
