@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Distribuidor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .detalle-container {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid red;
+            border-radius: 10px;
+            background-color: #f1dbdb;
+            width: 95%;
+            max-width: 1200px;
+            color: #333;
+            font-size: 18px;
+            line-height: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+        }
+        .detalle-container span {
+            font-weight: bold;
+        }
+        .detalle-container span .valor {
+            font-weight: normal;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .buttons button:hover {
+            background-color: #45a049;
+        }
+        .detalle-liquidaciones {
+        border: 2px solid green;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f9fff9;
+        }
+        .detalle-container-liquidacion {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #f9f9f9;
+        }
+        .pre-liquidacion, .liquidacion-final {
+        width: 48%;
+        }
+        h3 {
+            text-align: center;
+            color: green;
+            margin-bottom: 20px;
+        }
+        h4 {
+            color: #2d572c;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 8px 0;
+        }
+        span {
+            font-weight: bold;
+        }
+        .detalle-container-liquidacion > div:not(:last-child) {
+        border-right: 1px solid #ddd;
+        padding-right: 10px;
+        }
+        .detalle-container-liquidacion > div:last-child {
+        padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Módulo 6: Liquidación</h1>
+    <h2>Detalles del Distribuidor</h2>
+    <div class="detalle-container">
+        <span>Nombre del Distribuidor: <span class="valor">{{ datos_cliente.nombre_cliente }}</span></span>
+        <span>Representante: <span class="valor">{{ datos_cliente.representante_legal }}</span></span>
+        <span>Fecha de Resolución de Contrato: <span class="valor">{{ datos_cliente.fecha_resolucion|date:"d/m/Y" }}</span></span>
+    </div>
+    <div class="detalle-liquidaciones">
+        <div class="detalle-container-liquidacion">
+            <div class="pre-liquidacion">
+                <h3>Pre-Liquidación</h3>
+                {% if pre_liquidacion %}
+                    <ul>
+                        <li><strong>Código:</strong> {{ pre_liquidacion.codigo }}</li>
+                        <li><strong>Fecha Emitida:</strong> {{ pre_liquidacion.fecha_emitida|date:"d/m/Y" }}</li>
+                        <li><strong>Fecha Límite Observaciones:</strong> {{ pre_liquidacion.fecha_lim_obs|date:"d/m/Y" }}</li>
+                        <li><strong>Fecha Finalización:</strong> {{ pre_liquidacion.fecha_finalizacion|date:"d/m/Y" }}</li>
+                        <li><strong>Monto Deuda Acumulada:</strong> {{ pre_liquidacion.monto_deuda_acum }}</li>
+                        <li><strong>Monto Garantías:</strong> {{ pre_liquidacion.monto_garantias }}</li>
+                        <li><strong>Monto Comisiones:</strong> {{ pre_liquidacion.monto_comisiones }}</li>
+                    </ul>
+                {% else %}
+                    <p><strong>Aún no realizado.</strong></p>
+                {% endif %}
+            </div>
+            <div class="liquidacion-final">
+                <h3>Liquidación Final</h3>
+                {% if liquidacion_final and liquidacion_final.codigo %}
+                    <ul>
+                        <li><strong>Código:</strong> {{ liquidacion_final.codigo }}</li>
+                        <li><strong>Fecha Emitida:</strong> {{ liquidacion_final.fecha_emitida|date:"d/m/Y" }}</li>
+                        <li><strong>Fecha Límite Observaciones:</strong> {{ liquidacion_final.fecha_lim_obs|date:"d/m/Y" }}</li>
+                        <li><strong>Fecha Finalización:</strong> {{ liquidacion_final.fecha_finalizacion|date:"d/m/Y" }}</li>
+                        <li><strong>Monto Deuda Acumulada:</strong> {{ liquidacion_final.monto_deuda_acum }}</li>
+                        <li><strong>Monto Garantías:</strong> {{ liquidacion_final.monto_garantias }}</li>
+                        <li><strong>Monto Comisiones:</strong> {{ liquidacion_final.monto_comisiones }}</li>
+                    </ul>
+                {% else %}
+                    <p><strong>Aún no realizado.</strong></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button onclick="window.history.back()">Volver al Histórico</button>
+    </div>
+</body>
+</html>
