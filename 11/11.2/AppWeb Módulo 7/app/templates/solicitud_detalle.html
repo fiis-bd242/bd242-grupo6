@@ -18,10 +18,12 @@
                 <strong>Fecha de Recepción:</strong> {{ documento.fecha_recibido }} <br>
                 <strong>Versión:</strong> {{ documento.version }} <br>
                 <!-- Mostrar enlace si archivo está disponible -->
-                {% if documento.ruta_doc %}
-                    <a href="{{ documento.ruta_doc }}" target="_blank">Ver Documento</a>
+                {% if documento.cod_documento %}
+                    <a href="{% url 'serve_couchbase_file' documento.cod_documento %}" target="_blank">
+                    Descargar Archivo {{ form.initial.nombre_doc }}
+                    </a>
                 {% else %}
-                    <span>No hay archivo adjunto.</span>
+                <p>No hay archivo para este documento.</p>
                 {% endif %}
             </li>
         {% empty %}
