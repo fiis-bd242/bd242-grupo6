@@ -26,8 +26,13 @@
                     {% if documento.estado_validacion == 'VALIDADO' %}badge-success{% elif documento.estado_validacion == 'RECHAZADO' %}badge-danger{% else %}badge-warning{% endif %}">
                     {{ documento.estado_validacion }}
                 </span> <br>
-                <a href="{{ documento.ruta_doc }}" target="_blank">Ver Documento</a> <br>
-                
+                {% if documento.cod_documento %}
+                    <a href="{% url 'serve_couchbase_file' documento.cod_documento %}" target="_blank">
+                    Ver documento
+                    </a>
+                {% else %}
+                <p>No hay archivo para este documento.</p>
+                {% endif %}
                 <!-- Formulario para cambiar el estado del documento -->
                 <form method="POST" action="{% url 'cambiar_estado_documento' documento.cod_documento %}" style="display:inline;">
                     {% csrf_token %}
