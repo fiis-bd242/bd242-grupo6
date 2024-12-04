@@ -1,0 +1,10 @@
+# Ignorar caché de Python
+__pycache__/
+*.pyc
+
+# Ignorar base de datos de desarrollo
+*db.sqlite3
+
+# Ignorar archivos de registro
+*.log
+

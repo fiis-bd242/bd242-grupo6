@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo {{ numero }} - {{ nombre_modulo }}</title>
+    <script>
+        function showCalendar(codigo, fechaInicio, fechaFin) {
+            const calendarDiv = document.getElementById(`calendar-${codigo}`);
+            const dateInput = document.getElementById(`datepicker-${codigo}`);
+            calendarDiv.style.display = 'block';
+            dateInput.min = formatDate(fechaInicio);
+            dateInput.max = formatDate(fechaFin);
+            dateInput.value = formatDate(fechaFin);
+        }
+        function formatDate(dateString) {
+            const parts = dateString.split('/');
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        function saveDate(codigo) {
+            const dateInput = document.getElementById(`datepicker-${codigo}`);
+            const selectedDate = dateInput.value;
+            if (!selectedDate) {
+                alert("Seleccione una fecha antes de guardar.");
+                return;
+            }
+            fetch('/modulo/liquidacion/programar_resolucion/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ codigo: codigo, fecha: selectedDate }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert("Error al guardar la fecha: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Ocurrió un error inesperado.");
+            });
+        }
+    </script>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .table-container {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        .btn-index {
+            background-color: #4CAF50;
+        }
+        .btn-historico {
+            background-color: #2196F3;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Módulo {{ numero }}: {{ nombre_modulo }}</h1>
+    <h2>Contratos Vigentes Administrados</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Clasificación</th>
+                <th>Código</th>
+                <th>Región</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin Normal</th>
+                <th>Fecha Fin Real</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in contratos %}
+            <tr>
+                <td>{{ contrato.nombre_cliente }}</td>
+                <td>{{ contrato.clasificacion }}</td>
+                <td>{{ contrato.codigo }}</td>
+                <td>{{ contrato.region }}</td>
+                <td>{{ contrato.fecha_inicio }}</td>
+                <td>{{ contrato.fecha_fin_normal }}</td>
+                <td>{{ contrato.fecha_fin_real }}</td>
+                <td>
+                    {% if contrato.fecha_fin_real == "Sin programar" %}
+                        <button 
+                            onclick="showCalendar('{{ contrato.codigo }}', '{{ contrato.fecha_inicio }}', '{{ contrato.fecha_fin_normal }}')">
+                            Programar Resolución
+                        </button>
+                        <div id="calendar-{{ contrato.codigo }}" style="display: none;">
+                            <input 
+                                type="date" 
+                                id="datepicker-{{ contrato.codigo }}" 
+                                placeholder="Seleccionar fecha" 
+                            >
+                            <button onclick="saveDate('{{ contrato.codigo }}')">Guardar Fecha</button>
+                        </div>
+                    {% else %}
+                        <button disabled style="background-color: gray; cursor: not-allowed;">Resolución Programada</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="buttons">
+        <button class="btn-index" onclick="location.href='/'">Volver al Índice</button>
+        <button class="btn-historico" onclick="location.href='/modulo/liquidacion/historico'">Histórico Resoluciones</button>
+    </div>
+</body>
+</html>
