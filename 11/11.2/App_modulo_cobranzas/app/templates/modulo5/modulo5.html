@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nombre_modulo }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        .top-bar {
+            background-color: #D32F2F; /* Rojo claro */
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #D32F2F;
+            text-align: center;
+            margin: 60px 0 20px; /* Ajustar margen para dejar espacio a la barra superior */
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #D32F2F; /* Rojo claro */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #B71C1C; /* Rojo oscuro */
+        }
+
+        .table-container {
+            width: 90%; /* Reduce el ancho de la tabla */
+            max-height: 400px; /* Altura máxima limitada */
+            margin: 20px auto;
+            overflow-y: auto; /* Permite el deslizamiento vertical */
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 800px; /* Asegura un ancho mínimo */
+        }
+
+        thead {
+            background-color: #D32F2F; /* Rojo claro */
+            color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Estilo de la franja de "Cobranza" como cinta */
+        .estado-cobranza {
+            display: inline-block;
+            background-color: #D32F2F; /* Rojo claro */
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 6px 12px;
+            border-radius: 0 12px 12px 0; /* Esquinas redondeadas en forma de cinta */
+            position: relative;
+        }
+
+        .estado-cobranza::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-top: 20px solid #D32F2F;
+            border-right: 10px solid transparent;
+        }
+        h1 {
+            background-color: #D32F2F; /* Rojo Claro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ nombre_modulo }}</h1>
+    <!-- Botón para ver todos los clientes -->
+<button onclick="window.location.href='{% url 'ver_todos_los_clientes' %}'">Ver todos los clientes</button>
+
+        <!-- Formulario para ingresar el nombre del cliente -->
+        <form method="get" action="{% url 'filtrar_clientes_por_nombre' %}">
+            <label for="nombre_cliente">Buscar Cliente por Nombre:</label>
+            <input type="text" name="nombre_cliente" id="nombre_cliente" value="{{ nombre_cliente }}">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <!-- Botones de filtro para "Al día" y "Atrasado" -->
+        <button onclick="window.location.href='{% url 'filtrar_clientes' 'Al dia' %}'" {% if estado_deuda == 'Al dia' %} disabled {% endif %}>Al dia</button>
+        <button onclick="window.location.href='{% url 'filtrar_clientes' 'Atrasado' %}'" {% if estado_deuda == 'Atrasado' %} disabled {% endif %}>Atrasado</button>
+            
+    
+        <form method="POST" action="{% url 'actualizar_estado_cobranza' %}">
+            {% csrf_token %}
+            <button type="submit">Actualizar Estado de Cobranza</button>
+        </form>
+        <!-- Mostrar los mensajes de confirmación o error -->
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+
+    
+    
+    
+    
+    <!-- Contenedor de la tabla -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código Cliente</th>
+                    <th>Nombre Cliente</th>
+                    <th>Monto Deuda</th>
+                    <th>Estado Deuda</th>
+                    <th>Estado Cobranza</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.cod_cliente }}</td>
+                    <td>{{ cliente.nombre_cliente }}</td>
+                    <td>{{ cliente.monto_deuda }}</td>
+                    <td>{{ cliente.estado_deuda }}</td>
+                    <td>{{ cliente.estado_cobranza }}</td>
+
+                    <td>
+                        <a href="{% url 'detalle_cliente' cliente.cod_cliente %}" class="btn-detalles">
+                            Más detalles
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/" >Volver a la lista de clientes</a>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Notificaciones</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #D32F2F; /* Rojo Claro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Contenedor de la Dropdown */
+        .dropdown {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .dropdown-menu {
+            border-radius: 4px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background-color: #D32F2F; /* Rojo Claro */
+            color: white;
+        }
+
+        /* Estilos de los botones */
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #D32F2F; /* Rojo Claro */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #C62828; /* Rojo más oscuro */
+        }
+
+        /* Estilos de las alertas */
+        .alert {
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #ffeb3b;
+            color: #333;
+            border-radius: 4px;
+        }
+
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        td {
+            color: #333;
+        }
+
+        /* Estilo para los enlaces */
+        a {
+            display: inline-block;
+            text-align: center;
+            margin-top: 20px;
+            color: #D32F2F; /* Rojo Claro */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    <h1>Historial de Notificaciones para el Cliente {{ cliente_nombre }}</h1>
+ 
+    <h2>Notificación de Pago Realizado</h2>
+
+<!-- Formulario para el pago realizado -->
+<form method="POST" action="{% url 'pago_realizado' cod_cliente=cod_cliente %}">
+    {% csrf_token %}
+    <button type="submit">Registrar Pago</button>
+</form>
+
+
+
+
+<!-- Mostrar el nuevo código de notificación (si se ha generado uno) -->
+{% if nuevo_codigo %}
+    <h3>Código de Notificación Generado: {{ nuevo_codigo }}</h3>
+{% endif %}    
+
+<form method="POST" action="{% url 'agregar_notificacion' cod_cliente=cod_cliente %}">
+    {% csrf_token %}
+    <button type="submit" name="tipo_notificacion" value="recordatorio por vencimiento">Recordatorio por vencimiento</button>
+    <button type="submit" name="tipo_notificacion" value="llamada telefonica">Llamada telefónica</button>
+    <button type="submit" name="tipo_notificacion" value="visita personalizada">Visita personalizada</button>
+    <button type="submit" name="tipo_notificacion" value="carta notarial">Carta notarial</button>
+    <button type="submit" name="tipo_notificacion" value="derivacion prejudicial">Derivación prejudicial</button>
+</form>
+
+
+    {% if no_notificaciones %}
+    <div class="alert alert-warning">
+        No hay notificaciones disponibles para este cliente.
+    </div>
+    {% endif %}
+
+
+    {% if notificaciones %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código Notificación</th>
+                <th>Fecha Envío</th>
+                <th>Tipo de Notificación</th>
+                <th>Estado de Cobranza</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notificacion in notificaciones %}
+            <tr>
+                <td>{{ notificacion.0 }}</td>
+                <td>{{ notificacion.1 }}</td>
+                <td>{{ notificacion.2 }}</td>
+                <td>{{ notificacion.3 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No hay notificaciones para este cliente.</p>
+    {% endif %}
+
+    <!-- Botón siempre habilitado -->
+    <a href="{% url 'detalle_cliente' cod_cliente %}" class="btn btn-primary">Regresar a detalles de cliente</a>
+
+
+    
+</body>
+</html>
