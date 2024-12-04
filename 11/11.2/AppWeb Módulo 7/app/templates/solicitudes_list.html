@@ -22,10 +22,23 @@
             Subir Documento
         {% else %}
             Documento {{ forloop.counter }} - {{ form.solicitud_pointer.value|default:"Nuevo Documento" }}
+            
         {% endif %}</h3>
             <div class="form-group">
                 {{ form.as_p }}
             </div>
+            {% if forloop.last %}
+                
+            {% else %}
+                {% if form.initial.cod_documento %}
+                    <a href="{% url 'serve_couchbase_file' form.initial.cod_documento_pointer %}" target="_blank">
+                    Descargar Archivo para {{ form.initial.nombre_doc }}
+                    </a>
+                {% else %}
+                <p>No hay archivo para este documento.</p>
+                {% endif %}
+            {% endif %}
+            
         {% endfor %}
         
         <button type="submit" class="btn btn-primary">Subir Documentos</button>
