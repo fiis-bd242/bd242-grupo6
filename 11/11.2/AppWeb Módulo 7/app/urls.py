@@ -36,4 +36,7 @@ urlpatterns = [
     path('analista/eliminar_seguimiento/<str:cod_seguimiento>/', views.eliminar_seguimiento, name='eliminar_seguimiento'),
     path('analista/editar_entrevista/<str:cod_entrevista>/', views.editar_entrevista, name='editar_entrevista'),
     path('analista/eliminar_entrevista/<str:cod_entrevista>/', views.eliminar_entrevista, name='eliminar_entrevista'),
+    path('archivo_couchbase/<str:cod_documento>/', views.serve_couchbase_file, name='serve_couchbase_file'),
+
+
 ]
