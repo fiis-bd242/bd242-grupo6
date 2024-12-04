@@ -127,12 +127,7 @@ WHERE
 -- Para ordenar los creditos se utiliza el ORDER BY
 
 ORDER BY 
-    Pedido.FECHA_CREDITO;
-
-```
+    Solicitud.FECHA_CREDITO;
 
 
-    p.COD_CREDITO = 'CRE005573'  -- Reemplaza con el código del credito específico
-ORDER BY 
-    n.COD_NOTIFICACION DESC;
-```
+
