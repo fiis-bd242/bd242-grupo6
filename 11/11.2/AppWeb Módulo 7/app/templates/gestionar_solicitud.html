@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Solicitud{% endblock %}
+
+{% block content %}
+    <h1>Gestionar Solicitud - {{ solicitud.cod_solicitud }}</h1>
+    
+    <!-- Formulario para editar solicitud -->
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <!-- Links de navegación relacionados con la solicitud -->
+    <h2>Opciones</h2>
+    <ul>
+        <li><a href="{% url 'solicitud_detalle' solicitud.cod_solicitud %}">Ver Detalles de la Solicitud</a></li>
+        <li><a href="{% url 'registrar_entrevista' solicitud.cod_solicitud %}">Registrar Entrevista</a></li>
+        <li><a href="{% url 'registrar_capacitacion' solicitud.cod_solicitud %}">Registrar Capacitación</a></li>
+        <li><a href="{% url 'registrar_seguimiento' solicitud.cod_solicitud %}">Registrar Seguimiento</a></li>
+        <li><a href="{% url 'gestionar_documentos' solicitud.cod_solicitud %}">Gestionar Documentos</a></li>
+        <li><a href="{% url 'gestionar_entrevistas' solicitud.cod_solicitud %}">Gestionar Entrevistas</a></li>
+        <li><a href="{% url 'gestionar_capacitaciones' solicitud.cod_solicitud %}">Gestionar Capacitaciones</a></li>
+        <li><a href="{% url 'gestionar_seguimientos' solicitud.cod_solicitud %}">Gestionar Seguimientos</a></li>
+    </ul>
+{% endblock %}

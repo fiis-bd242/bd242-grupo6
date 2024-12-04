@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio Solicitante{% endblock %}
+
+{% block content %}
+<h1>Actualizar datos solicitante</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Detalles del solicitante -->
+    <fieldset>
+        <legend>Detalles del solicitante</legend>
+        {{ solicitud_form.as_p }}
+    </fieldset>
+    
+  
+    <!-- Botón de envío -->
+    <button type="submit" class="btn btn-primary">Enviar Datos</button>
+</form>
+
+
+{% endblock %}

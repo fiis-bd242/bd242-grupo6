@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Capacitación{% endblock %}
+
+{% block content %}
+    <h1>Capacitaciones - {{ solicitud.cod_solicitud }}</h1>
+    
+    <!-- Botón para registrar nueva capacitación -->
+    <a href="{% url 'registrar_capacitacion' solicitud.cod_solicitud %}" class="btn btn-success mb-3">Registrar Nueva Capacitación</a>
+
+    <!-- Formulario de edición y eliminación (esto estará oculto hasta que se quiera editar o eliminar) -->
+    <form method="POST" class="mb-3">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.as_p }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <!-- Lista de capacitaciones -->
+    <ul>
+        {% for capacitacion in capacitaciones %}
+            <li>
+                <strong>Código:</strong> {{ capacitacion.cod_capacitacion }} <br>
+                <strong>Fecha:</strong> {{ capacitacion.fecha_capacitacion }} <br>
+                <strong>Temas tratados:</strong> {{ capacitacion.temas_tratados }} <br>
+                <strong>Asistencia:</strong> {{ capacitacion.asistencia }} <br>
+                
+                <!-- Formulario de edición -->
+                <form method="POST" action="{% url 'editar_capacitacion' capacitacion.cod_capacitacion %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="cod_capacitacion" value="{{ capacitacion.cod_capacitacion }}">
+                    <input type="hidden" name="editar" value="true">
+
+                    <!-- Campos del formulario de edición -->
+                    <div class="form-group">
+                        <label for="fecha_capacitacion">Fecha de Capacitación:</label>
+                        <input type="date" class="form-control" name="fecha_capacitacion" value="{{ capacitacion.fecha_capacitacion }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temas_tratados">Temas Tratados:</label>
+                        <textarea class="form-control" name="temas_tratados" rows="3" required>{{ capacitacion.temas_tratados }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="asistencia">Asistencia:</label>
+                        <input type="number" class="form-control" name="asistencia" value="{{ capacitacion.asistencia }}" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+                </form>
+                <!-- Formulario de eliminación -->
+                <form method="POST" action="{% url 'eliminar_capacitacion' capacitacion.cod_capacitacion %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="cod_capacitacion" value="{{ capacitacion.cod_capacitacion }}">
+                    <input type="hidden" name="eliminar" value="true">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta capacitación?');">Eliminar</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No hay capacitaciones registradas.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
